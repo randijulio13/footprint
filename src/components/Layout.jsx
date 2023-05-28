@@ -1,39 +1,53 @@
-import * as React from "react";
+import styled from "@emotion/styled";
+import SearchIcon from "@mui/icons-material/Search";
+import { CssBaseline, Icon, InputBase, Switch } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import { CssBaseline } from "@mui/material";
+import * as React from "react";
+import { IoFootsteps } from "react-icons/io5";
 import { Outlet } from "react-router-dom";
+import useThemeContext from "../contexts/ThemeContext";
+
+const Search = styled("div")(({ theme }) => ({
+  backgroundColor: "white",
+  borderRadius: theme.shape.borderRadius,
+  padding: "0 10px",
+  width: "40%",
+}));
 
 export default function ButtonAppBar() {
+  const { darkMode, setDarkMode } = useThemeContext();
+
+  const handleChangeTheme = (e) => {
+    setDarkMode(e.target.checked);
+  };
+
   return (
     <Box>
       <CssBaseline />
-      <AppBar>
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
+      <AppBar position="sticky">
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography variant="h6" display="flex">
+            <Icon sx={{ mr: 1 }}>
+              <IoFootsteps />
+            </Icon>
+            <Typography display={{ xs: "none", sm: "block" }} variant="h6">
+              FOOTPRINT
+            </Typography>
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Search>
+            <InputBase sx={{ width: "100%" }} placeholder="Search..." />
+          </Search>
+          <Switch
+            checked={darkMode}
+            onChange={handleChangeTheme}
+            inputProps={{ "aria-label": "controlled" }}
+          />
         </Toolbar>
       </AppBar>
-      <Box sx={{ p: 2 }}>
-        <Toolbar />
-        <Outlet />
-      </Box>
+      <Outlet />
     </Box>
   );
 }
