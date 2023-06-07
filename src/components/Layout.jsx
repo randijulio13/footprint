@@ -1,39 +1,30 @@
 import styled from "@emotion/styled";
+import { Logout } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import {
+  CssBaseline,
   Avatar,
   Badge,
   Button,
-  CssBaseline,
-  Icon,
   IconButton,
-  Input,
   InputBase,
   ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
-  MenuList,
-  Switch,
   alpha,
+  Paper,
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import { useState } from "react";
 import { IoFootsteps } from "react-icons/io5";
 import { Outlet } from "react-router-dom";
 import useThemeContext from "../contexts/ThemeContext";
-import {
-  ContentCut,
-  DarkMode,
-  LightMode,
-  Logout,
-  Mail,
-} from "@mui/icons-material";
-import { blue } from "@mui/material/colors";
-import { useState } from "react";
+import { grey } from "@mui/material/colors";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -83,7 +74,6 @@ const RotateIconButton = styled(IconButton)(({ theme }) => ({
 }));
 
 export default function ButtonAppBar() {
-  const { darkMode, setDarkMode } = useThemeContext();
   const [anchorMenu, setAnchorMenu] = useState(false);
 
   const handleOpenMenu = (e) => {
@@ -94,14 +84,10 @@ export default function ButtonAppBar() {
     setAnchorMenu(null);
   };
 
-  const handleChangeTheme = (e) => {
-    setDarkMode((darkMode) => !darkMode);
-  };
-
   return (
     <Box>
-      <CssBaseline />
-      <AppBar position="sticky">
+      <CssBaseline enableColorScheme />
+      <AppBar position="sticky" id="appbar">
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box sx={{ display: "flex", gap: 1 }}>
             <Typography variant="h6">
@@ -117,28 +103,12 @@ export default function ButtonAppBar() {
             </SearchIconWrapper>
             <SearchInput placeholder="Search..." />
           </Search>
-          <Icons sx={{ display: { xs: "none", sm: "block" } }}>
-            <RotateIconButton
-              aria-label="theme"
-              onClick={handleChangeTheme}
-              color="inherit"
-            >
-              {darkMode ? <DarkMode /> : <LightMode />}
-            </RotateIconButton>
+          <Icons>
             <IconButton onClick={handleOpenMenu}>
               <Badge badgeContent={2} color="error">
                 <Avatar sx={{ width: 24, height: 24 }} />
               </Badge>
             </IconButton>
-          </Icons>
-          <Icons sx={{ display: { xs: "block", sm: "none" } }}>
-            <Button
-              onClick={handleOpenMenu}
-              color="inherit"
-              startIcon={<Avatar sx={{ width: 24, height: 24 }} />}
-            >
-              Udin
-            </Button>
           </Icons>
           <Menu
             PaperProps={{

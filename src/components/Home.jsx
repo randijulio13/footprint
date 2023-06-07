@@ -1,16 +1,11 @@
 import {
   Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Grid,
-  Stack,
-  Typography,
+  Stack
 } from "@mui/material";
 import React from "react";
-import useThemeContext from "../contexts/ThemeContext";
-import styled from "@emotion/styled";
+import Feed from "./Feed";
+import Sidebar from "./Sidebar";
+import Rightbar from "./Rightbar";
 
 export default function Home() {
   return (
@@ -19,23 +14,9 @@ export default function Home() {
       spacing={{ xs: 0, sm: 2 }}
       justifyContent="space-between"
     >
-      <Box
-        bgcolor="skyblue"
-        flex={1}
-        sx={{ display: { xs: "none", sm: "block" }, p: 2 }}
-      >
-        Sidebar
-      </Box>
-      <Box bgcolor="pink" flex={4} sx={{ p: 2 }}>
-        Feed
-      </Box>
-      <Box
-        bgcolor="green"
-        flex={2}
-        sx={{ display: { xs: "none", sm: "block" }, p: 2 }}
-      >
-        Rightbar
-      </Box>
+      <Sidebar />
+      <Feed />
+      <Rightbar />
     </Stack>
   );
 }
