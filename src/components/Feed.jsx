@@ -7,7 +7,7 @@ const Feed = () => {
     {
       image: `https://picsum.photos/id/${Math.floor(
         Math.random() * 100
-      )}/400/300`,
+      )}/1440`,
       userName: "Randi Julio Fajri",
       date: "13 Juli 2023",
       description:

@@ -14,6 +14,8 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
+import { Checkbox } from "@mui/material";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -62,9 +64,15 @@ export default function FeedCard({ image, userName, description, date }) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
+        <Checkbox
+          sx={{
+            "&.Mui-checked": {
+              color: red[900],
+            },
+          }}
+          icon={<FavoriteBorder />}
+          checkedIcon={<Favorite />}
+        />
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
