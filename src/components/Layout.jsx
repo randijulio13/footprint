@@ -2,29 +2,26 @@ import styled from "@emotion/styled";
 import { Logout } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import {
-  CssBaseline,
   Avatar,
   Badge,
-  Button,
+  CssBaseline,
   IconButton,
   InputBase,
   ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
-  alpha,
-  Paper,
+  alpha
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoFootsteps } from "react-icons/io5";
-import { Outlet } from "react-router-dom";
-import useThemeContext from "../contexts/ThemeContext";
-import { grey } from "@mui/material/colors";
+import { Outlet, useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -66,15 +63,14 @@ const Icons = styled(Box)(({ theme }) => ({
   color: "white",
 }));
 
-const RotateIconButton = styled(IconButton)(({ theme }) => ({
-  transition: theme.transitions.create("transform"),
-  "&:active": {
-    transform: "rotate(-180deg)",
-  },
-}));
-
-export default function ButtonAppBar() {
+export default function Layout() {
   const [anchorMenu, setAnchorMenu] = useState(false);
+  const { authUser, setAuthUser, handleSignout } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!authUser) navigate("/login");
+  }, [authUser]);
 
   const handleOpenMenu = (e) => {
     setAnchorMenu(e.currentTarget);
@@ -120,7 +116,7 @@ export default function ButtonAppBar() {
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            <MenuItem>
+            <MenuItem onClick={handleSignout}>
               <ListItemIcon>
                 <Logout fontSize="small" />
               </ListItemIcon>

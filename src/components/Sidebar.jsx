@@ -18,6 +18,7 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import useThemeContext from "../contexts/ThemeContext";
 import useElementHeight from "../hooks/useElementHeight";
+import useAuth from "../hooks/useAuth";
 
 const Sidebar = () => {
   const { darkMode, setDarkMode } = useThemeContext();
@@ -25,6 +26,7 @@ const Sidebar = () => {
   const [sidebarWidth, setSidebarWidth] = useState();
   const [sidebarHeight, setSidebarHeight] = useState();
   const appbarHeight = useElementHeight("appbar");
+  const { handleSignout } = useAuth();
 
   const handleResize = () => {
     setSidebarWidth(() => {
@@ -52,7 +54,7 @@ const Sidebar = () => {
       icon: darkMode ? <LightMode /> : <DarkMode />,
       onClick: () => setDarkMode((darkMode) => !darkMode),
     },
-    { label: "Logout", icon: <Logout /> },
+    { label: "Logout", icon: <Logout />, onClick: () => handleSignout() },
   ];
 
   return (

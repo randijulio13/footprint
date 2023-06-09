@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Avatar, AvatarGroup, Box, Typography } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import useElementHeight from "../hooks/useElementHeight";
 
@@ -52,6 +52,24 @@ const Rightbar = () => {
           <Typography variant="h6" fontWeight={100}>
             Online Friends
           </Typography>
+          <Box sx={{ position: "absolute" }}>
+            {/* <AvatarGroup max={7}>
+              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+              <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
+              <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
+              <Avatar
+                alt="Trevor Henderson"
+                src="/static/images/avatar/5.jpg"
+              />
+              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+              <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
+              <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
+              <Avatar
+                alt="Trevor Henderson"
+                src="/static/images/avatar/5.jpg"
+              />
+            </AvatarGroup> */}
+          </Box>
         </Box>
       </Box>
     </Box>

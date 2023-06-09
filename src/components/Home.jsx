@@ -1,11 +1,10 @@
 import {
-  Box,
   Stack
 } from "@mui/material";
 import React from "react";
-import Feed from "./Feed";
-import Sidebar from "./Sidebar";
+import Post from "./Post";
 import Rightbar from "./Rightbar";
+import Sidebar from "./Sidebar";
 
 export default function Home() {
   return (
@@ -15,7 +14,7 @@ export default function Home() {
       justifyContent="space-between"
     >
       <Sidebar />
-      <Feed />
+      <Post />
       <Rightbar />
     </Stack>
   );
