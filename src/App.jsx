@@ -7,6 +7,7 @@ import { UserContextProvider } from "./contexts/UserContext";
 import { PostContextProvider } from "./contexts/PostContext";
 import { AuthContextProvider } from "./contexts/AuthContext";
 import { FollowContextProvider } from "./contexts/FollowContext";
+import { ChatContextProvider } from "./contexts/ChatContext";
 
 export default function App() {
   return (
@@ -15,7 +16,9 @@ export default function App() {
         <UserContextProvider>
           <PostContextProvider>
             <FollowContextProvider>
-              <RouterProvider router={router} />
+              <ChatContextProvider>
+                <RouterProvider router={router} />
+              </ChatContextProvider>
             </FollowContextProvider>
           </PostContextProvider>
         </UserContextProvider>

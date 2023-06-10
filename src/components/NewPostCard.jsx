@@ -46,7 +46,12 @@ export default function NewPostCard() {
         />
       </CardContent>
       <CardActions sx={{ p: 2, display: "flex", justifyContent: "end" }}>
-        <Button type="submit" variant="contained" endIcon={<SendIcon />}>
+        <Button
+          type="submit"
+          variant="contained"
+          endIcon={<SendIcon />}
+          disabled={postContent === ""}
+        >
           Post
         </Button>
       </CardActions>

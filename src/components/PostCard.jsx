@@ -31,11 +31,11 @@ import moment from "moment";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
+import usePost from "../hooks/usePost";
 import usePostComment from "../hooks/usePostComment";
 import usePostLike from "../hooks/usePostLike";
 import PostComments from "./PostComments";
 import UserAvatar from "./UserAvatar";
-import usePost from "../hooks/usePost";
 
 export const StyledCard = styled(Card)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {

@@ -7,7 +7,6 @@ import Sidebar from "../components/Sidebar";
 import useAuth from "../hooks/useAuth";
 import Navbar from "./Navbar";
 
-
 export default function Layout() {
   const { authUser } = useAuth();
   const navigate = useNavigate();
@@ -17,16 +16,19 @@ export default function Layout() {
   }, [authUser]);
 
   return (
-    <Box>
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
       <CssBaseline enableColorScheme />
       <Navbar />
       <Stack
+        sx={{ flexGrow: 1 }}
         direction="row"
         spacing={{ xs: 0, sm: 2 }}
         justifyContent="space-between"
       >
         <Sidebar />
-        <Outlet />
+        <Box flex={4}>
+          <Outlet />
+        </Box>
         <Rightbar />
       </Stack>
     </Box>

@@ -56,7 +56,7 @@ const Sidebar = () => {
       icon: <Person />,
       onClick: () => navigate(`/profile/${authUser?.uid}`),
     },
-    { label: "Chat", icon: <ChatBubble /> },
+    { label: "Chat", icon: <ChatBubble />, onClick: () => navigate("/chat") },
     // { label: "Friends", icon: <People /> },
     // { label: "Settings", icon: <Settings /> },
     {

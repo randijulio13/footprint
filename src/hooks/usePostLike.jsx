@@ -2,16 +2,10 @@ import {
   addDoc,
   collection,
   deleteDoc,
-  doc,
-  getDocs,
-  onSnapshot,
-  query,
-  setDoc,
-  where,
+  doc
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
-import { db } from "../lib/firebase";
 import usePostContext from "../contexts/PostContext";
+import { db } from "../lib/firebase";
 
 export default function usePostLike(postId) {
   const { postLikes, setPostLikes } = usePostContext();

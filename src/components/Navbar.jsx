@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Logout, People, Person } from "@mui/icons-material";
+import { Logout, Person } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import {
   Avatar,
@@ -18,8 +18,8 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useState } from "react";
 import { IoFootsteps } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import { Link, useNavigate } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
