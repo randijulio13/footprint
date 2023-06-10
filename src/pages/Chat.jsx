@@ -11,7 +11,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useElementHeight from "../hooks/useElementHeight";
 import UserAvatar from "../components/UserAvatar";
@@ -43,6 +43,7 @@ export default function Chat() {
   const { users, getUser } = useUser();
   const { sendChat, getChat, chats: allChats } = useChat();
   const appbarHeight = useElementHeight("appbar");
+  const anchorRef = useRef();
 
   const navigate = useNavigate();
 
@@ -55,6 +56,7 @@ export default function Chat() {
     });
 
     setChatText("");
+    anchorRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -68,6 +70,12 @@ export default function Chat() {
       setUser(res);
     });
   }, [id, users]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      anchorRef.current.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  }, []);
 
   return (
     <Stack
@@ -97,8 +105,6 @@ export default function Chat() {
               flexGrow: 1,
               display: "flex",
               flexDirection: "column",
-              height: "100%",
-
               justifyContent: "end",
               gap: 2,
             }}
@@ -156,6 +162,7 @@ export default function Chat() {
                 );
               }
             })}
+            <Box ref={anchorRef}></Box>
           </Box>
         </CardContent>
         <CardActions>
@@ -181,7 +188,7 @@ export default function Chat() {
               label="Write a comment"
               InputProps={{
                 endAdornment: (
-                  <IconButton type="submit">
+                  <IconButton type="submit" disabled={chatText === ""}>
                     <Send />
                   </IconButton>
                 ),
