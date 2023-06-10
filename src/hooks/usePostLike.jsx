@@ -11,25 +11,17 @@ import {
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../lib/firebase";
+import usePostContext from "../contexts/PostContext";
 
 export default function usePostLike(postId) {
-  const [postLikes, setPostLikes] = useState([]);
+  const { postLikes, setPostLikes } = usePostContext();
   const postLikesRef = collection(db, "postLikes");
-  let q = query(postLikesRef, where("postId", "==", postId));
 
-  useEffect(() => {
-    const unsub = onSnapshot(q, (snapshot) => {
-      const items = snapshot.docs.map((data) => ({
-        ...data.data(),
-        id: data.id,
-      }));
-      setPostLikes(items);
+  const getPostLikes = async () => {
+    return postLikes.filter((postLike) => {
+      return postLike.postId === postId;
     });
-
-    return () => {
-      unsub();
-    };
-  }, []);
+  };
 
   const likePost = async (uid) => {
     await addDoc(postLikesRef, {
@@ -46,10 +38,14 @@ export default function usePostLike(postId) {
   };
 
   const deleteLikes = async () => {
-    postLikes.map(async (like) => {
-      await deleteDoc(doc(db, "postLikes", like.id));
-    });
+    postLikes
+      .filter((postLike) => {
+        return postLike.postId === postId;
+      })
+      .map(async (like) => {
+        await deleteDoc(doc(db, "postLikes", like.id));
+      });
   };
 
-  return { likePost, unlikePost, postLikes, deleteLikes };
+  return { likePost, unlikePost, postLikes, deleteLikes, getPostLikes };
 }

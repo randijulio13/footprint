@@ -1,13 +1,22 @@
-import React from "react";
-import useFirestore from "./useFirestore";
+import {
+  collection,
+  doc,
+  setDoc
+} from "firebase/firestore";
+import useUserContext from "../contexts/UserContext";
+import { db } from "../lib/firebase";
 
 export default function useUser() {
-  const { addData, data: users } = useFirestore("users");
+  const { users, setUsers } = useUserContext();
+  const usersRef = collection(db, "users");
 
   const addUser = async (data) => {
-    let id = await addData(data, { timestamp: true });
-    return id;
+    await setDoc(doc(db, "users", data.uid), data);
   };
 
-  return { addUser, users };
+  const getUser = async (id) => {
+    return users.find((user) => user.id === id);
+  };
+
+  return { addUser, users, getUser };
 }

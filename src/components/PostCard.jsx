@@ -1,28 +1,23 @@
 import {
-  BorderStyle,
   ChatBubble,
   ChatBubbleOutline,
-  Comment,
   Delete,
   Favorite,
   FavoriteBorder,
+  Send as SendIcon,
+  Share as ShareIcon,
 } from "@mui/icons-material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Send as SendIcon, Share as ShareIcon } from "@mui/icons-material";
 import {
   Box,
-  Button,
   Checkbox,
   Collapse,
-  InputBase,
   ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
   TextField,
 } from "@mui/material";
-import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -31,15 +26,16 @@ import CardMedia from "@mui/material/CardMedia";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
-import { alpha, styled } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import moment from "moment";
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
-import usePostLike from "../hooks/usePostLike";
 import usePostComment from "../hooks/usePostComment";
-import { useEffect } from "react";
+import usePostLike from "../hooks/usePostLike";
 import PostComments from "./PostComments";
+import UserAvatar from "./UserAvatar";
+import usePost from "../hooks/usePost";
 
 export const StyledCard = styled(Card)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
@@ -47,25 +43,37 @@ export const StyledCard = styled(Card)(({ theme }) => ({
   },
 }));
 
-export default function PostCard({
-  id,
-  post,
-  image = null,
-  user,
-  createdAt,
-  deletePost,
-  uid,
-}) {
+export default function PostCard({ id, post, image = null, user, createdAt }) {
+  const { likePost, unlikePost, postLikes, deleteLikes, getPostLikes } =
+    usePostLike(id);
+  const {
+    addComment,
+    postComments,
+    deleteComment,
+    deleteComments,
+    getPostComments,
+  } = usePostComment(id);
+  const { deletePost } = usePost();
+  const { authUser } = useAuth();
+
   const [expanded, setExpanded] = useState(false);
   const [anchorMenu, setAnchorMenu] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
-  const { likePost, unlikePost, postLikes, deleteLikes } = usePostLike(id);
-  const { commentPost, postComments, deleteComment, deleteComments } =
-    usePostComment(id);
-
+  const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
+  const [likes, setLikes] = useState([]);
 
-  const { authUser } = useAuth();
+  useEffect(() => {
+    getPostComments().then((cmmnts) => {
+      setComments(cmmnts);
+    });
+  }, [id, postComments]);
+
+  useEffect(() => {
+    getPostLikes().then((lks) => {
+      setLikes(lks);
+    });
+  }, [id, postLikes]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -99,7 +107,7 @@ export default function PostCard({
   const handleSubmitComment = (e) => {
     e.preventDefault();
 
-    commentPost({
+    addComment({
       comment,
       uid: authUser.uid,
     });
@@ -108,13 +116,13 @@ export default function PostCard({
   };
 
   useEffect(() => {
-    setIsLiked(!!postLikes.find((post) => post.uid === authUser.uid));
-  }, [user, postLikes]);
+    setIsLiked(!!likes.find((post) => post.uid === authUser.uid));
+  }, [user, likes]);
 
   return (
     <StyledCard sx={{ marginY: 4 }}>
       <CardHeader
-        avatar={<Avatar aria-label="recipe" src={user?.photoURL} />}
+        avatar={<UserAvatar {...user} />}
         action={
           <>
             <IconButton aria-label="settings" onClick={handleOpenMenu}>
@@ -188,7 +196,7 @@ export default function PostCard({
                   checkedIcon={<Favorite />}
                   checked={isLiked}
                 />
-                {postLikes.length}
+                {likes.length}
               </Box>
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <IconButton
@@ -198,7 +206,7 @@ export default function PostCard({
                 >
                   {expanded ? <ChatBubble /> : <ChatBubbleOutline />}
                 </IconButton>
-                {postComments.length}
+                {comments.length}
               </Box>
               <IconButton aria-label="share">
                 <ShareIcon />
@@ -210,7 +218,8 @@ export default function PostCard({
             onSubmit={handleSubmitComment}
             sx={{ px: 1, py: 2, display: "flex", gap: 2 }}
           >
-            <Avatar src={authUser?.photoURL} sx={{ alignSelf: "center" }} />
+            <UserAvatar {...authUser} />
+
             <TextField
               sx={{ flexGrow: 1 }}
               size="small"
@@ -231,7 +240,7 @@ export default function PostCard({
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent sx={{ py: 0 }}>
-          <PostComments {...{ postComments, authUser, user, deleteComment }} />
+          <PostComments {...{ comments, authUser, user, deleteComment }} />
         </CardContent>
       </Collapse>
     </StyledCard>

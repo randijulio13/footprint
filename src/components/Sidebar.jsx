@@ -1,10 +1,12 @@
 import {
+  ChatBubble,
   DarkMode,
   Home,
   Inbox,
   LightMode,
   Logout,
   People,
+  Person,
   Settings,
 } from "@mui/icons-material";
 import {
@@ -19,6 +21,7 @@ import React, { useEffect, useRef, useState } from "react";
 import useThemeContext from "../contexts/ThemeContext";
 import useElementHeight from "../hooks/useElementHeight";
 import useAuth from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const { darkMode, setDarkMode } = useThemeContext();
@@ -26,7 +29,7 @@ const Sidebar = () => {
   const [sidebarWidth, setSidebarWidth] = useState();
   const [sidebarHeight, setSidebarHeight] = useState();
   const appbarHeight = useElementHeight("appbar");
-  const { handleSignout } = useAuth();
+  const { authUser, handleSignout } = useAuth();
 
   const handleResize = () => {
     setSidebarWidth(() => {
@@ -44,11 +47,18 @@ const Sidebar = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, [sidebarRef, appbarHeight]);
 
+  const navigate = useNavigate();
+
   const menus = [
-    { label: "Home", icon: <Home /> },
-    { label: "Inbox", icon: <Inbox /> },
-    { label: "Friends", icon: <People /> },
-    { label: "Settings", icon: <Settings /> },
+    { label: "Home", icon: <Home />, onClick: () => navigate("/") },
+    {
+      label: "Profile",
+      icon: <Person />,
+      onClick: () => navigate(`/profile/${authUser?.uid}`),
+    },
+    { label: "Chat", icon: <ChatBubble /> },
+    // { label: "Friends", icon: <People /> },
+    // { label: "Settings", icon: <Settings /> },
     {
       label: darkMode ? "Light Mode" : "Dark Mode",
       icon: darkMode ? <LightMode /> : <DarkMode />,

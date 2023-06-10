@@ -4,40 +4,25 @@ import {
   collection,
   deleteDoc,
   doc,
-  onSnapshot,
-  orderBy,
-  query,
-  setDoc,
-  where,
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import usePostContext from "../contexts/PostContext";
 import { db } from "../lib/firebase";
-import useFirestore from "./useFirestore";
 
 export default function usePostComment(postId) {
-  const [postComments, setPostComments] = useState([]);
-  const { state: users } = useFirestore("users");
+  const { postComments, setPostComments } = usePostContext();
   const postCommentsRef = collection(db, "postComments");
-  let q = query(postCommentsRef, where("postId", "==", postId));
 
-  useEffect(() => {
-    const unsub = onSnapshot(q, (snapshot) => {
-      const items = snapshot.docs.map((data) => {
-        return {
-          ...data.data(),
-          user: users.find((user) => user.uid == data.data().uid),
-          id: data.id,
-        };
-      });
-      setPostComments(items);
+  const getPostComments = async () => {
+    let tmpComments = postComments.filter((postComment) => {
+      return postComment.postId === postId;
     });
 
-    return () => {
-      unsub();
-    };
-  }, [users]);
+    return tmpComments.sort(
+      (objA, objB) => Number(objB.createdAt) - Number(objA.createdAt)
+    );
+  };
 
-  const commentPost = async (data) => {
+  const addComment = async (data) => {
     data = {
       ...data,
       createdAt: Timestamp.fromDate(new Date()),
@@ -52,10 +37,20 @@ export default function usePostComment(postId) {
   };
 
   const deleteComments = async () => {
-    postComments.map(async (comment) => {
-      await deleteDoc(doc(db, "postComments", comment.id));
-    });
+    postComments
+      .filter((postComment) => {
+        return postComment.postId === postId;
+      })
+      .map(async (comment) => {
+        await deleteDoc(doc(db, "postComments", comment.id));
+      });
   };
 
-  return { commentPost, deleteComment, postComments, deleteComments };
+  return {
+    addComment,
+    deleteComment,
+    postComments,
+    deleteComments,
+    getPostComments,
+  };
 }

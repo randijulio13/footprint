@@ -1,17 +1,12 @@
-import * as React from "react";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import Divider from "@mui/material/Divider";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
+import { DeleteOutline } from "@mui/icons-material";
+import { Box, IconButton } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { Box, CardHeader, IconButton } from "@mui/material";
 import moment from "moment";
-import { Delete, DeleteOutline } from "@mui/icons-material";
+import * as React from "react";
+import UserAvatar from "./UserAvatar";
 
 export default function PostComments({
-  postComments,
+  comments,
   authUser,
   user,
   deleteComment,
@@ -32,58 +27,55 @@ export default function PostComments({
         gap: 1,
       }}
     >
-        {postComments.length === 0 && <Typography>No comment yet</Typography>}
-      {postComments.map((comment) => {
+      {comments?.length === 0 && <Typography>No comment yet</Typography>}
+      {comments?.map((comment) => {
         let deletAble =
-          comment.uid === authUser.uid || comment.uid === user.uid;
+          comment.uid === authUser.uid || user.uid === authUser.uid;
         return (
-          <>
-            <Box
-              sx={{
-                display: "flex",
-                gap: 1,
-              }}
-            >
-              <Avatar src={comment.user.photoURL} />
-              <Box sx={{ width: "100%" }}>
-                <Box
-                  sx={{
-                    width: "100%",
-                    flexGrow: 1,
-                    display: "flex",
-                    flexDirection: "column",
-                    p: 1,
-                    borderRadius: (theme) => theme.shape.borderRadius,
-                    background: (theme) => theme.palette.divider,
-                  }}
-                >
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Box sx={{ flexGrow: 1 }}>
-                      <Typography>{comment.user.name}</Typography>
-                      <Typography variant="body1">
-                        {comment?.comment}
-                      </Typography>
-                    </Box>
-                    {deletAble && (
-                      <IconButton
-                        onClick={(e) => handleDeleteComment(e, comment.id)}
-                        size="small"
-                        sx={{ color: (theme) => theme.palette.text.secondary }}
-                      >
-                        <DeleteOutline />
-                      </IconButton>
-                    )}
+          <Box
+            key={comment.id}
+            sx={{
+              display: "flex",
+              gap: 1,
+            }}
+          >
+            <UserAvatar {...comment.user} />
+            <Box sx={{ width: "100%" }}>
+              <Box
+                sx={{
+                  width: "100%",
+                  flexGrow: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  p: 1,
+                  borderRadius: (theme) => theme.shape.borderRadius,
+                  background: (theme) => theme.palette.divider,
+                }}
+              >
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Box sx={{ flexGrow: 1 }}>
+                    <Typography>{comment.user.name}</Typography>
+                    <Typography variant="body1">{comment?.comment}</Typography>
                   </Box>
+                  {deletAble && (
+                    <IconButton
+                      onClick={(e) => handleDeleteComment(e, comment.id)}
+                      size="small"
+                      sx={{ color: (theme) => theme.palette.text.secondary }}
+                    >
+                      <DeleteOutline />
+                    </IconButton>
+                  )}
                 </Box>
-                <Typography
-                  variant="caption"
-                  sx={{ color: (theme) => theme.palette.text.secondary, ml: 1 }}
-                >
-                  {moment(comment.createdAt?.toDate()).fromNow()}
-                </Typography>
               </Box>
+              <Typography
+                variant="caption"
+                sx={{ color: (theme) => theme.palette.text.secondary, ml: 1 }}
+              >
+                {moment(comment.createdAt?.toDate()).fromNow()}
+              </Typography>
             </Box>
-          </>
+          </Box>
         );
       })}
     </Box>

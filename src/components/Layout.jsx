@@ -1,131 +1,34 @@
-import styled from "@emotion/styled";
-import { Logout } from "@mui/icons-material";
-import SearchIcon from "@mui/icons-material/Search";
-import {
-  Avatar,
-  Badge,
-  CssBaseline,
-  IconButton,
-  InputBase,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  alpha
-} from "@mui/material";
-import AppBar from "@mui/material/AppBar";
+import { CssBaseline, Stack } from "@mui/material";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import * as React from "react";
-import { useEffect, useState } from "react";
-import { IoFootsteps } from "react-icons/io5";
+import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import Rightbar from "../components/Rightbar";
+import Sidebar from "../components/Sidebar";
 import useAuth from "../hooks/useAuth";
+import Navbar from "./Navbar";
 
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  backgroundColor: alpha(theme.palette.common.white, 0.9),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 1),
-  },
-  transition: "all 0.5s",
-  borderRadius: theme.shape.borderRadius,
-  padding: "0 10px",
-  width: "40%",
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  color: theme.palette.common.black,
-}));
-
-const SearchInput = styled(InputBase)(({ theme }) => ({
-  color: alpha(theme.palette.common.black, 0.8),
-  width: "100%",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-  },
-}));
-
-const Icons = styled(Box)(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  gap: 4,
-  color: "white",
-}));
 
 export default function Layout() {
-  const [anchorMenu, setAnchorMenu] = useState(false);
-  const { authUser, setAuthUser, handleSignout } = useAuth();
+  const { authUser } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!authUser) navigate("/login");
   }, [authUser]);
 
-  const handleOpenMenu = (e) => {
-    setAnchorMenu(e.currentTarget);
-  };
-
-  const handleCloseMenu = () => {
-    setAnchorMenu(null);
-  };
-
   return (
     <Box>
       <CssBaseline enableColorScheme />
-      <AppBar position="sticky" id="appbar">
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Box sx={{ display: "flex", gap: 1 }}>
-            <Typography variant="h6">
-              <IoFootsteps />
-            </Typography>
-            <Typography display={{ xs: "none", sm: "block" }} variant="h6">
-              FOOTPRINT
-            </Typography>
-          </Box>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <SearchInput placeholder="Search..." />
-          </Search>
-          <Icons>
-            <IconButton onClick={handleOpenMenu}>
-              <Badge badgeContent={2} color="error">
-                <Avatar sx={{ width: 24, height: 24 }} />
-              </Badge>
-            </IconButton>
-          </Icons>
-          <Menu
-            PaperProps={{
-              sx: { width: 200 },
-            }}
-            open={Boolean(anchorMenu)}
-            anchorEl={anchorMenu}
-            onClose={handleCloseMenu}
-            transformOrigin={{ horizontal: "right", vertical: "top" }}
-            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-          >
-            <MenuItem onClick={handleSignout}>
-              <ListItemIcon>
-                <Logout fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Logout</ListItemText>
-            </MenuItem>
-          </Menu>
-        </Toolbar>
-      </AppBar>
-      <Outlet />
+      <Navbar />
+      <Stack
+        direction="row"
+        spacing={{ xs: 0, sm: 2 }}
+        justifyContent="space-between"
+      >
+        <Sidebar />
+        <Outlet />
+        <Rightbar />
+      </Stack>
     </Box>
   );
 }

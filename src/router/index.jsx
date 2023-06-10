@@ -4,17 +4,19 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
+import Home from "../pages/Home";
+import Profile from "../pages/Profile";
 import Layout from "../components/Layout";
-import Home from "../components/Home";
-import LoginPage from "../components/LoginPage";
+import Login from "../pages/Login";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/profile/:id" element={<Profile />} />
       </Route>
-      <Route path="/login" element={<LoginPage />} />
+      <Route path="/login" element={<Login />} />
     </Route>
   )
 );
