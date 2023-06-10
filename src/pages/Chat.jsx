@@ -74,7 +74,7 @@ export default function Chat() {
   useEffect(() => {
     setTimeout(() => {
       anchorRef.current.scrollIntoView({ behavior: "smooth" });
-    }, 100);
+    }, 1000);
   }, []);
 
   return (
@@ -114,7 +114,7 @@ export default function Chat() {
                 return (
                   <Box
                     key={chat.id}
-                    sx={{ display: "flex", gap: 1, mr: "auto" }}
+                    sx={{ display: "flex", gap: 2, mr: "auto" }}
                   >
                     <Avatar
                       src={user.photoURL}
@@ -137,11 +137,17 @@ export default function Chat() {
                 return (
                   <Box
                     key={chat.id}
-                    sx={{ display: "flex", gap: 1, ml: "auto" }}
+                    sx={{ display: "flex", gap: 2, ml: "auto" }}
                   >
-                    <Box sx={{ width: "100%" }}>
+                    <Box
+                      sx={{
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
                       <BubbleChat>{chat.chat}</BubbleChat>
-                      <Typography variant="caption">
+                      <Typography variant="caption" sx={{ textAlign: "right" }}>
                         {moment(chat?.createdAt.toDate()).fromNow()}
                       </Typography>
                     </Box>
