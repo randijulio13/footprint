@@ -13,7 +13,6 @@ export default function ChatIndex() {
   const { getListChat, chats } = useChat();
   const [listChat, setListChat] = useState([]);
 
-
   useEffect(() => {
     getListChat(authUser.uid).then((res) => {
       setListChat(res);
@@ -22,6 +21,9 @@ export default function ChatIndex() {
 
   return (
     <Stack spacing={{ sm: 1, md: 2, lg: 4 }} sx={{ p: { xs: 0, sm: 2 } }}>
+      <Typography variant="h4" sx={{ mt: 2 }}>
+        List Chat
+      </Typography>
       {listChat.map((chat) => (
         <Card sx={{ width: "100%" }}>
           <CardActionArea onClick={() => navigate(`/chat/${chat.senderId}`)}>

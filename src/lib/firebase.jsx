@@ -3,13 +3,13 @@ import { GoogleAuthProvider, getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD9AGsStTZw0oMOtbZ7YzTSvYdOfiiCCeE",
-  authDomain: "superchat-e01c1.firebaseapp.com",
-  projectId: "superchat-e01c1",
-  storageBucket: "superchat-e01c1.appspot.com",
-  messagingSenderId: "177503198206",
-  appId: "1:177503198206:web:575f4330a4cb2407d63eaf",
-  measurementId: "G-XE1YWPNX5Z",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 initializeApp(firebaseConfig);
 
