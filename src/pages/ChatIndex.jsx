@@ -1,4 +1,11 @@
-import { Box, Card, CardActionArea, CardContent, Stack } from "@mui/material";
+import {
+  Badge,
+  Box,
+  Card,
+  CardActionArea,
+  CardContent,
+  Stack,
+} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useState } from "react";
@@ -10,13 +17,17 @@ import { useNavigate } from "react-router-dom";
 export default function ChatIndex() {
   const navigate = useNavigate();
   const { authUser } = useAuth();
-  const { getListChat, chats } = useChat();
+  const { getUserChatRooms, getNewMessage, chats } = useChat();
   const [listChat, setListChat] = useState([]);
+  const [newMessage, setNewMessage] = useState(0);
 
   useEffect(() => {
-    getListChat(authUser.uid).then((res) => {
+    getUserChatRooms(authUser.uid).then((res) => {
       setListChat(res);
     });
+
+    let tmpNewMessage = getNewMessage(authUser.uid);
+    setNewMessage(tmpNewMessage);
   }, [chats]);
 
   return (
@@ -24,31 +35,66 @@ export default function ChatIndex() {
       <Typography variant="h4" sx={{ mt: 2 }}>
         List Chat
       </Typography>
-      {listChat.map((chat) => (
-        <Card sx={{ width: "100%" }}>
-          <CardActionArea onClick={() => navigate(`/chat/${chat.senderId}`)}>
-            <CardContent sx={{ display: "flex", gap: 2 }}>
-              <Avatar src={chat.user.photoURL} />
-              <Box
-                sx={{
-                  flexGrow: 1,
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Box>
-                  <Typography variant="h5">{chat.user.name}</Typography>
-                  <Typography variant="subtitle1">{chat.chat}</Typography>
-                </Box>
-                <Typography variant="caption">
-                  {moment(chat?.createdAt?.toDate()).fromNow()}
-                </Typography>
-              </Box>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      ))}
+      {listChat.map((chat) => {
+        // let individualNewMessage = newMessage?.filter((newMsg) => {
+        //   return newMsg.senderId !== authUser.uid;
+        // });
+
+        return (
+          <Card sx={{ width: "100%" }} key={chat.roomId}>
+            <CardActionArea onClick={() => navigate(`/chat/${chat?.roomId}`)}>
+              <CardContent sx={{ display: "flex", gap: 2 }}>
+                {chat.member.length === 1 ? (
+                  <>
+                    <Badge
+                      color="primary"
+                      badgeContent={0}
+                    >
+                      <Avatar src={chat.member[0].photoURL} />
+                    </Badge>
+                    <Box
+                      sx={{
+                        flexGrow: 1,
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Box>
+                        <Typography variant="h5">
+                          {chat?.member[0].name}
+                        </Typography>
+
+                        {chat.latestMessage ? (
+                          <Typography variant="subtitle1">
+                            {chat.latestMessage.senderId === authUser.uid && (
+                              <i>(you)</i>
+                            )}{" "}
+                            {chat?.latestMessage.chat}
+                          </Typography>
+                        ) : (
+                          <Typography variant="subtitle1">
+                            <i>Empty chat room</i>
+                          </Typography>
+                        )}
+                      </Box>
+                      {chat.latestMessage && (
+                        <Typography variant="caption">
+                          {moment(
+                            chat?.latestMessage?.createdAt?.toDate()
+                          ).fromNow()}
+                        </Typography>
+                      )}
+                    </Box>
+                  </>
+                ) : (
+                  ""
+                )}
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        );
+      })}
     </Stack>
   );
 }

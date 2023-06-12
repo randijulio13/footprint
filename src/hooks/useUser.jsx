@@ -14,7 +14,7 @@ export default function useUser() {
     await setDoc(doc(db, "users", data.uid), data);
   };
 
-  const getUser = async (id) => {
+  const getUser = (id) => {
     return users.find((user) => user.id === id);
   };
 

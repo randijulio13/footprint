@@ -6,7 +6,10 @@ const ChatContext = createContext();
 
 export function ChatContextProvider({ children }) {
   const [chats, setChats] = useState([]);
+  const [chatRooms, setChatRooms] = useState([]);
+
   const chatsRef = collection(db, "chats");
+  const chatRoomsRef = collection(db, "chatRooms");
 
   useEffect(() => {
     const unsub = onSnapshot(chatsRef, (snapshot) => {
@@ -23,11 +26,31 @@ export function ChatContextProvider({ children }) {
     };
   }, []);
 
-  const state = { chats, setChats };
+  useEffect(() => {
+    const unsub = onSnapshot(chatRoomsRef, (snapshot) => {
+      const items = snapshot.docs.map((data) => ({
+        ...data.data(),
+        id: data.id,
+      }));
 
-  return (
-    <ChatContext.Provider value={state}>{children}</ChatContext.Provider>
-  );
+      setChatRooms(items);
+    });
+
+    return () => {
+      unsub();
+    };
+  }, []);
+
+  const state = {
+    chats,
+    setChats,
+    chatsRef,
+    chatRooms,
+    setChatRooms,
+    chatRoomsRef,
+  };
+
+  return <ChatContext.Provider value={state}>{children}</ChatContext.Provider>;
 }
 
 export default function useChatContext() {

@@ -35,13 +35,21 @@ const BubbleChat = styled(Box)(({ theme }) => ({
 
 export default function Chat() {
   let { id } = useParams();
-  const [user, setUser] = useState({});
   const [chatText, setChatText] = useState("");
   const [chats, setChats] = useState([]);
 
   const { authUser } = useAuth();
-  const { users, getUser } = useUser();
-  const { sendChat, getChat, chats: allChats } = useChat();
+  const { users } = useUser();
+  const {
+    sendChat,
+    getChat,
+    chats: allChats,
+    readMessage,
+    chatRooms,
+    getChatRoomMember,
+  } = useChat();
+  const [otherChatMember, setOtherChatMember] = useState([]);
+
   const appbarHeight = useElementHeight("appbar");
   const anchorRef = useRef();
 
@@ -51,7 +59,7 @@ export default function Chat() {
     e.preventDefault();
     await sendChat({
       senderId: authUser.uid,
-      receiverId: id,
+      roomId: id,
       chat: chatText,
     });
 
@@ -60,16 +68,20 @@ export default function Chat() {
   };
 
   useEffect(() => {
+    let chatRoomMember = getChatRoomMember(id);
+    let tmpMember = chatRoomMember?.filter(
+      (member) => member.id !== authUser.uid
+    );
+    setOtherChatMember(tmpMember);
+  }, [users, chatRooms, authUser, id]);
+
+  useEffect(() => {
     getChat(id).then((res) => {
       setChats(res);
     });
-  }, [allChats]);
 
-  useEffect(() => {
-    getUser(id).then((res) => {
-      setUser(res);
-    });
-  }, [id, users]);
+    readMessage({ roomId: id });
+  }, [allChats]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -86,11 +98,17 @@ export default function Chat() {
         <CardHeader
           title={
             <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-              <IconButton onClick={(_) => navigate("/chat")}>
+              <IconButton onClick={(_) => navigate(-1)}>
                 <ArrowBack />
               </IconButton>
-              <UserAvatar {...user} />
-              <Typography>{user?.name}</Typography>
+              {otherChatMember?.length === 1 ? (
+                <>
+                  <UserAvatar {...otherChatMember[0]} />
+                  <Typography>{otherChatMember[0]?.name}</Typography>
+                </>
+              ) : (
+                ""
+              )}
             </Box>
           }
         />
@@ -110,30 +128,7 @@ export default function Chat() {
             }}
           >
             {chats.map((chat, index) => {
-              if (id === chat.senderId) {
-                return (
-                  <Box
-                    key={chat.id}
-                    sx={{ display: "flex", gap: 2, mr: "auto" }}
-                  >
-                    <Avatar
-                      src={user.photoURL}
-                      sx={{
-                        visibility: () =>
-                          chats[index - 1]?.senderId !== chat.senderId
-                            ? "visible"
-                            : "hidden",
-                      }}
-                    />
-                    <Box sx={{ width: "100%" }}>
-                      <BubbleChat>{chat.chat}</BubbleChat>
-                      <Typography variant="caption">
-                        {moment(chat?.createdAt.toDate()).fromNow()}
-                      </Typography>
-                    </Box>
-                  </Box>
-                );
-              } else {
+              if (chat.senderId === authUser.uid) {
                 return (
                   <Box
                     key={chat.id}
@@ -151,12 +146,12 @@ export default function Chat() {
                         {moment(chat?.createdAt.toDate()).fromNow()}
                       </Typography>
                     </Box>
-                    {chats[index - 1]?.receiverId !== chat.receiverId ? (
+                    {chats[index - 1]?.senderId !== chat.senderId ? (
                       <Avatar
-                        src={authUser.photoURL}
+                        src={authUser?.photoURL}
                         sx={{
                           visibility: () =>
-                            chats[index - 1]?.receiverId !== chat.receiverId
+                            chats[index - 1]?.senderId !== chat.senderId
                               ? "visible"
                               : "hidden",
                         }}
@@ -164,6 +159,32 @@ export default function Chat() {
                     ) : (
                       <Box sx={{ ml: 5 }}></Box>
                     )}
+                  </Box>
+                );
+              } else {
+                let user = otherChatMember.find(
+                  (member) => member.id === chat.senderId
+                );
+                return (
+                  <Box
+                    key={chat.id}
+                    sx={{ display: "flex", gap: 2, mr: "auto" }}
+                  >
+                    <Avatar
+                      src={user?.photoURL}
+                      sx={{
+                        visibility: () =>
+                          chats[index - 1]?.senderId !== chat.senderId
+                            ? "visible"
+                            : "hidden",
+                      }}
+                    />
+                    <Box sx={{ width: "100%" }}>
+                      <BubbleChat>{chat.chat}</BubbleChat>
+                      <Typography variant="caption">
+                        {moment(chat?.createdAt.toDate()).fromNow()}
+                      </Typography>
+                    </Box>
                   </Box>
                 );
               }

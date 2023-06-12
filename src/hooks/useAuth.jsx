@@ -15,7 +15,7 @@ export default function useAuth() {
 
   const handleSignin = async () => {
     let result = await signInWithPopup(auth, googleProvider);
-    let isUserExist = await getUser(result.user.uid);
+    let isUserExist = getUser(result.user.uid);
     if (isUserExist) {
       await addUser({
         uid: result.user.uid,

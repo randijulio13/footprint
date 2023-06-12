@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import NewPostCard from "../components/NewPostCard";
 import useUser from "../hooks/useUser";
 import moment from "moment";
@@ -26,6 +26,7 @@ import usePost from "../hooks/usePost";
 import useAuth from "../hooks/useAuth";
 import PostCard from "../components/PostCard";
 import useFollow from "../hooks/useFollow";
+import useChat from "../hooks/useChat";
 
 const Profile = () => {
   let { id } = useParams();
@@ -43,8 +44,11 @@ const Profile = () => {
     getFollowing,
   } = useFollow();
 
+  const { chats, getChatRoom, createChatRoom } = useChat();
+
   const [follower, setFollower] = useState([]);
   const [following, setFollowing] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getFollower(id).then((res) => {
@@ -63,9 +67,8 @@ const Profile = () => {
   }, [posts, id]);
 
   useEffect(() => {
-    getUser(id).then((user) => {
-      setUserProfile(user);
-    });
+    let user = getUser(id);
+    setUserProfile(user);
   }, [users, id]);
 
   useEffect(() => {
@@ -79,6 +82,16 @@ const Profile = () => {
 
   const handleUnfollowUser = async () => {
     await unfollowUser(id);
+  };
+
+  const handleChatButton = async (e, id) => {
+    e.preventDefault();
+    let res = await getChatRoom(id);
+    if (!res) {
+      res = await createChatRoom({ member: [id, authUser.uid] });
+    }
+    let roomId = res.id;
+    navigate(`/chat/${roomId}`);
   };
 
   return (
@@ -163,15 +176,15 @@ const Profile = () => {
                     Follow
                   </Button>
                 )}
-                <Link to={`/chat/${id}`}>
-                  <Button
-                    startIcon={<ChatBubble />}
-                    variant="contained"
-                    size="small"
-                  >
-                    Chat
-                  </Button>
-                </Link>
+
+                <Button
+                  onClick={(e) => handleChatButton(e, id)}
+                  startIcon={<ChatBubble />}
+                  variant="contained"
+                  size="small"
+                >
+                  Chat
+                </Button>
               </>
             )}
           </Box>

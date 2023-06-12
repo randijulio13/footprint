@@ -10,7 +10,9 @@ import {
   Settings,
 } from "@mui/icons-material";
 import {
+  Badge,
   Box,
+  Chip,
   List,
   ListItem,
   ListItemButton,
@@ -22,6 +24,7 @@ import useThemeContext from "../contexts/ThemeContext";
 import useElementHeight from "../hooks/useElementHeight";
 import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import useChat from "../hooks/useChat";
 
 const Sidebar = () => {
   const { darkMode, setDarkMode } = useThemeContext();
@@ -40,6 +43,14 @@ const Sidebar = () => {
       return sidebarRef?.current?.clientHeight;
     });
   };
+
+  const [newMessage, setNewMessage] = useState(0);
+  const { getNewMessage, chats } = useChat();
+
+  useEffect(() => {
+    let newMessage = getNewMessage(authUser.uid)
+    setNewMessage(newMessage);
+  }, [chats, authUser]);
 
   useEffect(() => {
     handleResize();
@@ -92,9 +103,19 @@ const Sidebar = () => {
             {menus.map((menu, index) => {
               return (
                 <ListItem disablePadding key={index}>
-                  <ListItemButton onClick={menu.onClick ? menu.onClick : null}>
+                  <ListItemButton
+                    onClick={menu.onClick ? menu.onClick : null}
+                    sx={{ display: "flex", justfiyContent: "space-between" }}
+                  >
                     <ListItemIcon>{menu.icon}</ListItemIcon>
                     <ListItemText primary={menu.label} />
+                    {menu.label === "Chat" && newMessage.length > 0 && (
+                      <Chip
+                        color="primary"
+                        label={newMessage.length}
+                        size="small"
+                      />
+                    )}
                   </ListItemButton>
                 </ListItem>
               );
