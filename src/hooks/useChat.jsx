@@ -47,6 +47,9 @@ export default function useChat() {
         let latestMessage = chats.filter((chat) => {
           return chat.roomId === room.id;
         });
+        latestMessage = latestMessage.sort(
+          (objA, objB) => Number(objB.createdAt) - Number(objA.createdAt)
+        );
         return {
           roomId: room.id,
           member,

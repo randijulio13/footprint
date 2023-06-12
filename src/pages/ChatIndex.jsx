@@ -36,9 +36,9 @@ export default function ChatIndex() {
         List Chat
       </Typography>
       {listChat.map((chat) => {
-        // let individualNewMessage = newMessage?.filter((newMsg) => {
-        //   return newMsg.senderId !== authUser.uid;
-        // });
+        let individualNewMessage = newMessage?.filter((newMsg) => {
+          return newMsg.senderId !== authUser.uid;
+        });
 
         return (
           <Card sx={{ width: "100%" }} key={chat.roomId}>
@@ -48,7 +48,7 @@ export default function ChatIndex() {
                   <>
                     <Badge
                       color="primary"
-                      badgeContent={0}
+                      badgeContent={individualNewMessage.length}
                     >
                       <Avatar src={chat.member[0].photoURL} />
                     </Badge>
