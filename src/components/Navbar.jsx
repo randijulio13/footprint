@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import { Logout, Person } from "@mui/icons-material";
-import SearchIcon from "@mui/icons-material/Search";
 import {
   Avatar,
   IconButton,
@@ -9,6 +8,7 @@ import {
   ListItemText,
   Menu,
   MenuItem,
+  TextField,
   alpha,
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
@@ -20,38 +20,7 @@ import { useState } from "react";
 import { IoFootsteps } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  backgroundColor: alpha(theme.palette.common.white, 0.9),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 1),
-  },
-  transition: "all 0.5s",
-  borderRadius: theme.shape.borderRadius,
-  padding: "0 10px",
-  width: "40%",
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  color: theme.palette.common.black,
-}));
-
-const SearchInput = styled(InputBase)(({ theme }) => ({
-  color: alpha(theme.palette.common.black, 0.8),
-  width: "100%",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-  },
-}));
+import Search from "./Search";
 
 const Icons = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -90,12 +59,14 @@ export default function Navbar() {
             FOOTPRINT
           </Typography>
         </Box>
-        <Search>
+        {/* <Search>
           <SearchIconWrapper>
             <SearchIcon />
           </SearchIconWrapper>
           <SearchInput placeholder="Search..." />
-        </Search>
+        </Search> */}
+        <Search />
+
         <Icons>
           {authUser?.displayName}
           <IconButton onClick={handleOpenMenu}>

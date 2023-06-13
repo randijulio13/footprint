@@ -23,6 +23,104 @@ import { ChatBubble, HowToReg, Person, PersonAdd } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import useChat from "../hooks/useChat";
 
+const ListUser = ({ users }) => {
+  const { isFollowing, followUser, unfollowUser } = useFollow();
+  const { authUser } = useAuth();
+  const { getChatRoom, createChatRoom } = useChat();
+  const navigate = useNavigate();
+
+  const handleChatButton = async (e, id) => {
+    e.preventDefault();
+    let res = await getChatRoom(id);
+    if (!res) {
+      res = await createChatRoom({ member: [id, authUser.uid] });
+    }
+    let roomId = res.id;
+    navigate(`/chat/${roomId}`);
+  };
+
+  const handleFollowUser = async (id) => {
+    await followUser(id);
+  };
+
+  const handleUnfollowUser = async (id) => {
+    await unfollowUser(id);
+  };
+
+  return (
+    <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+      {users.length === 0 && (
+        <ListItem
+          sx={{
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography>
+            <i>No Data</i>
+          </Typography>
+        </ListItem>
+      )}
+      {users.map((user) => {
+        return (
+          <Box key={user.id}>
+            <ListItem
+              sx={{
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <ListItemAvatar>
+                <Avatar alt={user.name} src={user.photoURL} />
+              </ListItemAvatar>
+              <ListItemText primary={user.name} />
+              <Box sx={{ display: "flex", gap: 2 }}>
+                <Button
+                  onClick={(e) => handleChatButton(e, user.id)}
+                  size="small"
+                  variant="contained"
+                  startIcon={<ChatBubble />}
+                >
+                  Chat
+                </Button>
+                <Link to={`/profile/${user.id}`}>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    startIcon={<Person />}
+                  >
+                    View Profile
+                  </Button>
+                </Link>
+                {isFollowing(user.id) ? (
+                  <Button
+                    onClick={(_) => handleUnfollowUser(user.id)}
+                    startIcon={<HowToReg />}
+                    variant="outlined"
+                    size="small"
+                  >
+                    Following
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={(_) => handleFollowUser(user.id)}
+                    startIcon={<PersonAdd />}
+                    variant="contained"
+                    size="small"
+                  >
+                    Follow
+                  </Button>
+                )}
+              </Box>
+            </ListItem>
+            <Divider variant="inset" component="li" />
+          </Box>
+        );
+      })}
+    </List>
+  );
+};
+
 export default function Friend() {
   const [tab, setTab] = useState("following");
   const handleChangeTab = (e, newValue) => {
@@ -49,24 +147,6 @@ export default function Friend() {
     setFollowing(getFollowing(authUser.uid));
   }, [users, follows, authUser]);
 
-  const handleChatButton = async (e, id) => {
-    e.preventDefault();
-    let res = await getChatRoom(id);
-    if (!res) {
-      res = await createChatRoom({ member: [id, authUser.uid] });
-    }
-    let roomId = res.id;
-    navigate(`/chat/${roomId}`);
-  };
-
-  const handleFollowUser = async (id) => {
-    await followUser(id);
-  };
-
-  const handleUnfollowUser = async (id) => {
-    await unfollowUser(id);
-  };
-
   return (
     <Stack spacing={{ sm: 1, md: 2, lg: 4 }} sx={{ p: { xs: 0, sm: 2 } }}>
       <Typography variant="h4" sx={{ mt: 2 }}>
@@ -86,125 +166,7 @@ export default function Friend() {
           }
         />
         <CardContent>
-          {tab === "following" ? (
-            <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-              {following.map((fllwing) => {
-                return (
-                  <>
-                    <ListItem
-                      sx={{
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <ListItemAvatar>
-                        <Avatar alt={fllwing.name} src={fllwing.photoURL} />
-                      </ListItemAvatar>
-                      <ListItemText primary={fllwing.name} />
-                      <Box sx={{ display: "flex", gap: 2 }}>
-                        <Button
-                          onClick={(e) => handleChatButton(e, fllwing.id)}
-                          size="small"
-                          variant="contained"
-                          startIcon={<ChatBubble />}
-                        >
-                          Chat
-                        </Button>
-                        <Link to={`/profile/${fllwing.id}`}>
-                          <Button
-                            size="small"
-                            variant="contained"
-                            startIcon={<Person />}
-                          >
-                            View Profile
-                          </Button>
-                        </Link>
-                        {isFollowing(fllwing.id) ? (
-                          <Button
-                            onClick={(_) => handleUnfollowUser(fllwing.id)}
-                            startIcon={<HowToReg />}
-                            variant="outlined"
-                            size="small"
-                          >
-                            Following
-                          </Button>
-                        ) : (
-                          <Button
-                            onClick={(_) => handleFollowUser(fllwing.id)}
-                            startIcon={<PersonAdd />}
-                            variant="contained"
-                            size="small"
-                          >
-                            Follow
-                          </Button>
-                        )}
-                      </Box>
-                    </ListItem>
-                    <Divider variant="inset" component="li" />
-                  </>
-                );
-              })}
-            </List>
-          ) : (
-            <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-              {follower.map((fllwer) => {
-                return (
-                  <>
-                    <ListItem
-                      sx={{
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <ListItemAvatar>
-                        <Avatar alt={fllwer.name} src={fllwer.photoURL} />
-                      </ListItemAvatar>
-                      <ListItemText primary={fllwer.name} />
-                      <Box sx={{ display: "flex", gap: 2 }}>
-                        <Button
-                          onClick={(e) => handleChatButton(e, fllwer.id)}
-                          size="small"
-                          variant="contained"
-                          startIcon={<ChatBubble />}
-                        >
-                          Chat
-                        </Button>
-                        <Link to={`/profile/${fllwer.id}`}>
-                          <Button
-                            size="small"
-                            variant="contained"
-                            startIcon={<Person />}
-                          >
-                            View Profile
-                          </Button>
-                        </Link>
-                        {isFollowing(fllwer.id) ? (
-                          <Button
-                            onClick={(_) => handleUnfollowUser(fllwer.id)}
-                            startIcon={<HowToReg />}
-                            variant="outlined"
-                            size="small"
-                          >
-                            Following
-                          </Button>
-                        ) : (
-                          <Button
-                            onClick={(_) => handleFollowUser(fllwer.id)}
-                            startIcon={<PersonAdd />}
-                            variant="contained"
-                            size="small"
-                          >
-                            Follow
-                          </Button>
-                        )}
-                      </Box>
-                    </ListItem>
-                    <Divider variant="inset" component="li" />
-                  </>
-                );
-              })}
-            </List>
-          )}
+          <ListUser users={tab === "following" ? following : follower} />
         </CardContent>
       </Card>
     </Stack>

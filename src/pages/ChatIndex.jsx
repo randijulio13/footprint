@@ -19,7 +19,7 @@ export default function ChatIndex() {
   const { authUser } = useAuth();
   const { getUserChatRooms, getNewMessage, chats } = useChat();
   const [listChat, setListChat] = useState([]);
-  const [newMessage, setNewMessage] = useState(0);
+  const [newMessage, setNewMessage] = useState([]);
 
   useEffect(() => {
     getUserChatRooms(authUser.uid).then((res) => {
@@ -31,13 +31,16 @@ export default function ChatIndex() {
   }, [chats]);
 
   return (
-    <Stack spacing={{ sm: 1, md: 2, lg: 4 }} sx={{ p: { xs: 0, sm: 2 } }}>
+    <Stack spacing={{ sm: 1, md: 2 }} sx={{ p: { xs: 0, sm: 2 } }}>
       <Typography variant="h4" sx={{ mt: 2 }}>
         List Chats
       </Typography>
       {listChat.map((chat) => {
         let individualNewMessage = newMessage?.filter((newMsg) => {
-          return newMsg.senderId !== authUser.uid;
+          return (
+            newMsg.senderId !== authUser.uid &&
+            newMsg.senderId === chat.latestMessage.senderId
+          );
         });
 
         return (
