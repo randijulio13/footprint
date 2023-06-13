@@ -17,7 +17,7 @@ import useElementHeight from "../hooks/useElementHeight";
 import UserAvatar from "../components/UserAvatar";
 import useUser from "../hooks/useUser";
 import useAuth from "../hooks/useAuth";
-import { ArrowBack, Send } from "@mui/icons-material";
+import { ArrowBack, DoneAll, Send } from "@mui/icons-material";
 import useChat from "../hooks/useChat";
 import styled from "@emotion/styled";
 import moment from "moment";

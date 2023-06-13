@@ -48,7 +48,7 @@ const Sidebar = () => {
   const { getNewMessage, chats } = useChat();
 
   useEffect(() => {
-    let newMessage = getNewMessage(authUser.uid)
+    let newMessage = getNewMessage(authUser.uid);
     setNewMessage(newMessage);
   }, [chats, authUser]);
 
@@ -68,7 +68,7 @@ const Sidebar = () => {
       onClick: () => navigate(`/profile/${authUser?.uid}`),
     },
     { label: "Chat", icon: <ChatBubble />, onClick: () => navigate("/chat") },
-    // { label: "Friends", icon: <People /> },
+    { label: "Friends", icon: <People />, onClick: () => navigate("/friend") },
     // { label: "Settings", icon: <Settings /> },
     {
       label: darkMode ? "Light Mode" : "Dark Mode",

@@ -3,11 +3,12 @@ import useFollowContext from "../contexts/FollowContext";
 import useAuth from "./useAuth";
 import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../lib/firebase";
+import useUserContext from "../contexts/UserContext";
 
 export default function useFollow() {
-  const { follows, setFollows } = useFollowContext();
+  const { follows, setFollows, followsRef } = useFollowContext();
+  const { users } = useUserContext();
   const { authUser } = useAuth();
-  const followsRef = collection(db, "follows");
 
   const followUser = async (uid) => {
     return await addDoc(followsRef, {
@@ -23,15 +24,31 @@ export default function useFollow() {
     return await deleteDoc(doc(db, "follows", id));
   };
 
-  const getFollower = async (uid) => {
-    return follows.filter((follow) => {
-      return follow.following === uid;
+  const getFollower = (uid) => {
+    let follower = follows
+      .filter((follow) => {
+        return follow.following === uid;
+      })
+      .map((follow) => {
+        return follow.follower;
+      });
+
+    return users.filter((user) => {
+      return follower.includes(user.id);
     });
   };
 
-  const getFollowing = async (uid) => {
-    return follows.filter((follow) => {
-      return follow.follower === uid;
+  const getFollowing = (uid) => {
+    let following = follows
+      .filter((follow) => {
+        return follow.follower === uid;
+      })
+      .map((follow) => {
+        return follow.following;
+      });
+
+    return users.filter((user) => {
+      return following.includes(user.id);
     });
   };
 

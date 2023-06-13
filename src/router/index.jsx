@@ -10,6 +10,7 @@ import Layout from "../components/Layout";
 import Login from "../pages/Login";
 import ChatIndex from "../pages/ChatIndex";
 import Chat from "../pages/Chat";
+import Friend from "../pages/Friend";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -17,6 +18,7 @@ const router = createBrowserRouter(
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="/profile/:id" element={<Profile />} />
+        <Route path="/friend" element={<Friend />} />
         <Route path="/chat">
           <Route index element={<ChatIndex />} />
           <Route path=":id" element={<Chat />} />

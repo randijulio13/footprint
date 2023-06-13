@@ -23,7 +23,7 @@ export function FollowContextProvider({ children }) {
     };
   }, []);
 
-  const state = { follows, setFollows };
+  const state = { follows, setFollows, followsRef };
 
   return (
     <FollowContext.Provider value={state}>{children}</FollowContext.Provider>

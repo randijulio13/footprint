@@ -51,13 +51,8 @@ const Profile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getFollower(id).then((res) => {
-      setFollower(res);
-    });
-
-    getFollowing(id).then((res) => {
-      setFollowing(res);
-    });
+    setFollower(getFollower(id));
+    setFollowing(getFollowing(id));
   }, [follows, id]);
 
   useEffect(() => {

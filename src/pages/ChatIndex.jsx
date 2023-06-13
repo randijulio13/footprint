@@ -33,7 +33,7 @@ export default function ChatIndex() {
   return (
     <Stack spacing={{ sm: 1, md: 2, lg: 4 }} sx={{ p: { xs: 0, sm: 2 } }}>
       <Typography variant="h4" sx={{ mt: 2 }}>
-        List Chat
+        List Chats
       </Typography>
       {listChat.map((chat) => {
         let individualNewMessage = newMessage?.filter((newMsg) => {
