@@ -185,38 +185,40 @@ const Profile = () => {
             </Box>
           )}
         </CardContent>
-        <CardActions sx={{ display: { xs: "flex", md: "none" }, m: 1 }}>
-          {isFollowing(id) ? (
+        {id !== authUser.uid && (
+          <CardActions sx={{ display: { xs: "flex", md: "none" }, m: 1 }}>
+            {isFollowing(id) ? (
+              <Button
+                sx={{ flexGrow: 1 }}
+                onClick={handleUnfollowUser}
+                startIcon={<HowToReg />}
+                variant="outlined"
+                size="small"
+              >
+                Following
+              </Button>
+            ) : (
+              <Button
+                sx={{ flexGrow: 1 }}
+                onClick={handleFollowUser}
+                startIcon={<PersonAdd />}
+                variant="contained"
+                size="small"
+              >
+                Follow
+              </Button>
+            )}
             <Button
               sx={{ flexGrow: 1 }}
-              onClick={handleUnfollowUser}
-              startIcon={<HowToReg />}
-              variant="outlined"
-              size="small"
-            >
-              Following
-            </Button>
-          ) : (
-            <Button
-              sx={{ flexGrow: 1 }}
-              onClick={handleFollowUser}
-              startIcon={<PersonAdd />}
+              onClick={(e) => handleChatButton(e, id)}
+              startIcon={<ChatBubble />}
               variant="contained"
               size="small"
             >
-              Follow
+              Chat
             </Button>
-          )}
-          <Button
-            sx={{ flexGrow: 1 }}
-            onClick={(e) => handleChatButton(e, id)}
-            startIcon={<ChatBubble />}
-            variant="contained"
-            size="small"
-          >
-            Chat
-          </Button>
-        </CardActions>
+          </CardActions>
+        )}
       </Card>
       {authUser.uid === id && <NewPostCard />}
       {userPosts.map((post) => {
