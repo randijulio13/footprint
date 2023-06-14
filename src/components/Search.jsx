@@ -1,6 +1,6 @@
+import SearchIcon from "@mui/icons-material/Search";
 import { Paper, TextField } from "@mui/material";
 import React, { useState } from "react";
-import SearchIcon from "@mui/icons-material/Search";
 
 export default function Search() {
   const [search, setSearch] = useState("");

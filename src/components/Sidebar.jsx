@@ -2,29 +2,26 @@ import {
   ChatBubble,
   DarkMode,
   Home,
-  Inbox,
   LightMode,
   Logout,
   People,
-  Person,
-  Settings,
+  Person
 } from "@mui/icons-material";
 import {
-  Badge,
   Box,
   Chip,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
-  ListItemText,
+  ListItemText
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import useThemeContext from "../contexts/ThemeContext";
-import useElementHeight from "../hooks/useElementHeight";
-import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import useThemeContext from "../contexts/ThemeContext";
+import useAuth from "../hooks/useAuth";
 import useChat from "../hooks/useChat";
+import useElementHeight from "../hooks/useElementHeight";
 
 const Sidebar = () => {
   const { darkMode, setDarkMode } = useThemeContext();

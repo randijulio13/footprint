@@ -1,15 +1,12 @@
-import React from "react";
-import useChatContext from "../contexts/ChatContext";
-import useAuth from "./useAuth";
 import {
   Timestamp,
   addDoc,
-  collection,
-  deleteDoc,
   doc,
-  writeBatch,
+  writeBatch
 } from "firebase/firestore";
+import useChatContext from "../contexts/ChatContext";
 import { db } from "../lib/firebase";
+import useAuth from "./useAuth";
 import useUser from "./useUser";
 
 export default function useChat() {

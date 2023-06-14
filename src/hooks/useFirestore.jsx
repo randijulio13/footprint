@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from "react";
-import { db } from "../lib/firebase";
 import {
   Timestamp,
   addDoc,
@@ -11,6 +9,8 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { db } from "../lib/firebase";
 
 export default function useFirestore(colName) {
   const [state, setState] = useState([]);

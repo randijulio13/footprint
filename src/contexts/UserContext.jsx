@@ -1,5 +1,5 @@
+import { collection, onSnapshot } from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Timestamp, addDoc, collection, onSnapshot } from "firebase/firestore";
 import { db } from "../lib/firebase";
 const UserContext = createContext();
 

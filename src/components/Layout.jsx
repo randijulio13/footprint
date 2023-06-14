@@ -13,7 +13,7 @@ export default function Layout() {
 
   useEffect(() => {
     if (!authUser) navigate("/login");
-  }, [authUser]);
+  }, [authUser, navigate]);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>

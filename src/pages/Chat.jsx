@@ -1,7 +1,8 @@
+import styled from "@emotion/styled";
+import { ArrowBack, Send } from "@mui/icons-material";
 import {
   Avatar,
   Box,
-  Button,
   Card,
   CardActions,
   CardContent,
@@ -9,18 +10,16 @@ import {
   IconButton,
   Stack,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
+import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import useElementHeight from "../hooks/useElementHeight";
 import UserAvatar from "../components/UserAvatar";
-import useUser from "../hooks/useUser";
 import useAuth from "../hooks/useAuth";
-import { ArrowBack, DoneAll, Send } from "@mui/icons-material";
 import useChat from "../hooks/useChat";
-import styled from "@emotion/styled";
-import moment from "moment";
+import useElementHeight from "../hooks/useElementHeight";
+import useUser from "../hooks/useUser";
 
 const BubbleChat = styled(Box)(({ theme }) => ({
   wordWrap: "break-word",

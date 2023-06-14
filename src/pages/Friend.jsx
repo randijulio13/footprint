@@ -1,3 +1,4 @@
+import { ChatBubble, HowToReg, Person, PersonAdd } from "@mui/icons-material";
 import {
   Avatar,
   Box,
@@ -16,12 +17,11 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import useChat from "../hooks/useChat";
 import useFollow from "../hooks/useFollow";
 import useUser from "../hooks/useUser";
-import useAuth from "../hooks/useAuth";
-import { ChatBubble, HowToReg, Person, PersonAdd } from "@mui/icons-material";
-import { Link, useNavigate } from "react-router-dom";
-import useChat from "../hooks/useChat";
 
 const ListUser = ({ users }) => {
   const { isFollowing, followUser, unfollowUser } = useFollow();
@@ -94,7 +94,7 @@ const ListUser = ({ users }) => {
                 </Link>
                 {isFollowing(user.id) ? (
                   <Button
-                    onClick={(_) => handleUnfollowUser(user.id)}
+                    onClick={() => handleUnfollowUser(user.id)}
                     startIcon={<HowToReg />}
                     variant="outlined"
                     size="small"
@@ -103,7 +103,7 @@ const ListUser = ({ users }) => {
                   </Button>
                 ) : (
                   <Button
-                    onClick={(_) => handleFollowUser(user.id)}
+                    onClick={() => handleFollowUser(user.id)}
                     startIcon={<PersonAdd />}
                     variant="contained"
                     size="small"

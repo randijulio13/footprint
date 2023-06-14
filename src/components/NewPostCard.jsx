@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import  { useState } from "react";
 import useAuth from "../hooks/useAuth";
 import usePost from "../hooks/usePost";
 import { StyledCard } from "./PostCard";

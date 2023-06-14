@@ -1,4 +1,11 @@
 import {
+  ChatBubble,
+  Create,
+  HowToReg,
+  People,
+  PersonAdd
+} from "@mui/icons-material";
+import {
   Avatar,
   Box,
   Button,
@@ -9,24 +16,16 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
-import NewPostCard from "../components/NewPostCard";
-import useUser from "../hooks/useUser";
 import moment from "moment";
-import {
-  ChatBubble,
-  Create,
-  Draw,
-  HowToReg,
-  People,
-  PersonAdd,
-} from "@mui/icons-material";
-import usePost from "../hooks/usePost";
-import useAuth from "../hooks/useAuth";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import NewPostCard from "../components/NewPostCard";
 import PostCard from "../components/PostCard";
-import useFollow from "../hooks/useFollow";
+import useAuth from "../hooks/useAuth";
 import useChat from "../hooks/useChat";
+import useFollow from "../hooks/useFollow";
+import usePost from "../hooks/usePost";
+import useUser from "../hooks/useUser";
 
 const Profile = () => {
   let { id } = useParams();

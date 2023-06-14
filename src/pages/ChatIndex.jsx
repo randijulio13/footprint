@@ -8,11 +8,11 @@ import {
 } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import useChat from "../hooks/useChat";
-import moment from "moment";
-import { useNavigate } from "react-router-dom";
 
 export default function ChatIndex() {
   const navigate = useNavigate();

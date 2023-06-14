@@ -1,8 +1,8 @@
-import { Box, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import React from "react";
-import usePost from "../hooks/usePost";
-import PostCard from "../components/PostCard";
 import NewPostCard from "../components/NewPostCard";
+import PostCard from "../components/PostCard";
+import usePost from "../hooks/usePost";
 
 const Home = () => {
   const { posts } = usePost();

@@ -1,8 +1,8 @@
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-import useUserContext from "./UserContext";
 import { db } from "../lib/firebase";
+import useUserContext from "./UserContext";
 
 const PostContext = createContext();
 

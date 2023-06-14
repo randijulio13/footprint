@@ -8,7 +8,7 @@ import usePostContext from "../contexts/PostContext";
 import { db } from "../lib/firebase";
 
 export default function usePostLike(postId) {
-  const { postLikes, setPostLikes } = usePostContext();
+  const { postLikes } = usePostContext();
   const postLikesRef = collection(db, "postLikes");
 
   const getPostLikes = async () => {

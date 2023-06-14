@@ -3,13 +3,10 @@ import { Logout, Person } from "@mui/icons-material";
 import {
   Avatar,
   IconButton,
-  InputBase,
   ListItemIcon,
   ListItemText,
   Menu,
-  MenuItem,
-  TextField,
-  alpha,
+  MenuItem
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";

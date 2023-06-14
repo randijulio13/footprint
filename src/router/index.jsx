@@ -4,13 +4,13 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import Home from "../pages/Home";
-import Profile from "../pages/Profile";
 import Layout from "../components/Layout";
-import Login from "../pages/Login";
-import ChatIndex from "../pages/ChatIndex";
 import Chat from "../pages/Chat";
+import ChatIndex from "../pages/ChatIndex";
 import Friend from "../pages/Friend";
+import Home from "../pages/Home";
+import Login from "../pages/Login";
+import Profile from "../pages/Profile";
 
 const router = createBrowserRouter(
   createRoutesFromElements(

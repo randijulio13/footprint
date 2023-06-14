@@ -1,13 +1,12 @@
-import React from "react";
 import { RouterProvider } from "react-router-dom";
-import { ThemeContextProvider } from "./contexts/ThemeContext";
-import router from "./router";
-import "./lib/firebase";
-import { UserContextProvider } from "./contexts/UserContext";
-import { PostContextProvider } from "./contexts/PostContext";
 import { AuthContextProvider } from "./contexts/AuthContext";
-import { FollowContextProvider } from "./contexts/FollowContext";
 import { ChatContextProvider } from "./contexts/ChatContext";
+import { FollowContextProvider } from "./contexts/FollowContext";
+import { PostContextProvider } from "./contexts/PostContext";
+import { ThemeContextProvider } from "./contexts/ThemeContext";
+import { UserContextProvider } from "./contexts/UserContext";
+import "./lib/firebase";
+import router from "./router";
 
 export default function App() {
   return (

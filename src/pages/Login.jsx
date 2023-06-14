@@ -1,9 +1,8 @@
+import { Google } from "@mui/icons-material";
+import { Box, Button, CssBaseline } from "@mui/material";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import { Box, Button, CssBaseline, Typography } from "@mui/material";
-import { Google } from "@mui/icons-material";
-import { IoFootsteps } from "react-icons/io5";
 
 export default function Login() {
   const { authUser, handleSignin } = useAuth();

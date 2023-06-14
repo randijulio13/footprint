@@ -9,7 +9,7 @@ import usePostContext from "../contexts/PostContext";
 import { db } from "../lib/firebase";
 
 export default function usePostComment(postId) {
-  const { postComments, setPostComments } = usePostContext();
+  const { postComments } = usePostContext();
   const postCommentsRef = collection(db, "postComments");
 
   const getPostComments = async () => {

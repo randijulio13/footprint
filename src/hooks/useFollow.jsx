@@ -1,9 +1,8 @@
-import React from "react";
+import { addDoc, deleteDoc, doc } from "firebase/firestore";
 import useFollowContext from "../contexts/FollowContext";
-import useAuth from "./useAuth";
-import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
-import { db } from "../lib/firebase";
 import useUserContext from "../contexts/UserContext";
+import { db } from "../lib/firebase";
+import useAuth from "./useAuth";
 
 export default function useFollow() {
   const { follows, setFollows, followsRef } = useFollowContext();
