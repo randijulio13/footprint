@@ -7,6 +7,7 @@ import {
   CardContent,
   CardHeader,
   Divider,
+  Grid,
   List,
   ListItem,
   ListItemAvatar,
@@ -22,6 +23,7 @@ import useAuth from "../hooks/useAuth";
 import useChat from "../hooks/useChat";
 import useFollow from "../hooks/useFollow";
 import useUser from "../hooks/useUser";
+import UserAvatar from "../components/UserAvatar";
 
 const ListUser = ({ users }) => {
   const { isFollowing, followUser, unfollowUser } = useFollow();
@@ -48,7 +50,15 @@ const ListUser = ({ users }) => {
   };
 
   return (
-    <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+    <List
+      sx={{
+        width: "100%",
+        bgcolor: "background.paper",
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+      }}
+    >
       {users.length === 0 && (
         <ListItem
           sx={{
@@ -66,15 +76,69 @@ const ListUser = ({ users }) => {
           <Box key={user.id}>
             <ListItem
               sx={{
-                alignItems: "center",
                 justifyContent: "space-between",
+                gap: 2,
               }}
             >
-              <ListItemAvatar>
-                <Avatar alt={user.name} src={user.photoURL} />
-              </ListItemAvatar>
-              <ListItemText primary={user.name} />
-              <Box sx={{ display: "flex", gap: 2 }}>
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                }}
+              >
+                <ListItemAvatar>
+                  <UserAvatar {...user} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={user.name}
+                  secondary={
+                    <Box
+                      sx={{
+                        display: { xs: "flex", md: "none" },
+                        gap: 1,
+                        mt: 1,
+                      }}
+                    >
+                      <Button
+                        onClick={(e) => handleChatButton(e, user.id)}
+                        size="small"
+                        variant="contained"
+                        startIcon={<ChatBubble />}
+                      >
+                        Chat
+                      </Button>
+                      {isFollowing(user.id) ? (
+                        <Button
+                          onClick={() => handleUnfollowUser(user.id)}
+                          startIcon={<HowToReg />}
+                          variant="outlined"
+                          size="small"
+                        >
+                          Following
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={() => handleFollowUser(user.id)}
+                          startIcon={<PersonAdd />}
+                          variant="contained"
+                          size="small"
+                        >
+                          Follow
+                        </Button>
+                      )}
+                    </Box>
+                  }
+                />
+              </Box>
+              <Box
+                sx={{
+                  display: { xs: "none", md: "flex" },
+                  gap: 2,
+                  justifyContent: "center",
+                }}
+              >
                 <Button
                   onClick={(e) => handleChatButton(e, user.id)}
                   size="small"
@@ -83,15 +147,6 @@ const ListUser = ({ users }) => {
                 >
                   Chat
                 </Button>
-                <Link to={`/profile/${user.id}`}>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    startIcon={<Person />}
-                  >
-                    View Profile
-                  </Button>
-                </Link>
                 {isFollowing(user.id) ? (
                   <Button
                     onClick={() => handleUnfollowUser(user.id)}
@@ -113,7 +168,6 @@ const ListUser = ({ users }) => {
                 )}
               </Box>
             </ListItem>
-            <Divider variant="inset" component="li" />
           </Box>
         );
       })}
@@ -149,7 +203,7 @@ export default function Friend() {
 
   return (
     <Stack spacing={{ sm: 1, md: 2, lg: 4 }} sx={{ p: { xs: 0, sm: 2 } }}>
-      <Typography variant="h4" sx={{ mt: 2 }}>
+      <Typography variant="h4" sx={{ mt: 2, m: { xs: 2, md: 0 } }}>
         List Friends
       </Typography>
       <Card>

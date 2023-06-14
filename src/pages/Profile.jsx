@@ -3,16 +3,18 @@ import {
   Create,
   HowToReg,
   People,
-  PersonAdd
+  PersonAdd,
 } from "@mui/icons-material";
 import {
   Avatar,
   Box,
   Button,
   Card,
+  CardActions,
   CardContent,
   CardMedia,
   Chip,
+  Grid,
   Stack,
   Typography,
 } from "@mui/material";
@@ -90,7 +92,7 @@ const Profile = () => {
 
   return (
     <Stack spacing={{ sm: 1, md: 2, lg: 3 }} sx={{ p: { xs: 0, sm: 2 } }}>
-      <Card sx={{ width: "100%" }}>
+      <Card sx={{ mb: { xs: 4, sm: 0 } }}>
         <CardMedia
           component="img"
           height="250"
@@ -122,11 +124,11 @@ const Profile = () => {
               {moment(userProfile?.createdAt?.toDate()).format("Do MMMM YYYY")}
             </Typography>
             <Box sx={{ display: "flex", gap: 1, mt: 2 }}>
-              <Chip
+              {/* <Chip
                 sx={{ pl: 1 }}
                 icon={<Create fontSize="small" />}
                 label={`${userPosts?.length} Posts`}
-              />
+              /> */}
               <Chip
                 sx={{ pl: 1 }}
                 icon={<People fontSize="small" />}
@@ -139,17 +141,17 @@ const Profile = () => {
               />
             </Box>
           </Box>
-          <Box
-            sx={{
-              flexGrow: 1,
-              alignItems: "center",
-              display: "flex",
-              justifyContent: "end",
-              gap: 2,
-              px: 4,
-            }}
-          >
-            {id !== authUser.uid && (
+          {id !== authUser.uid && (
+            <Box
+              sx={{
+                flexGrow: 1,
+                alignItems: "center",
+                display: { xs: "none", md: "flex" },
+                justifyContent: "end",
+                gap: 2,
+                px: 4,
+              }}
+            >
               <>
                 {isFollowing(id) ? (
                   <Button
@@ -180,9 +182,41 @@ const Profile = () => {
                   Chat
                 </Button>
               </>
-            )}
-          </Box>
+            </Box>
+          )}
         </CardContent>
+        <CardActions sx={{ display: { xs: "flex", md: "none" }, m: 1 }}>
+          {isFollowing(id) ? (
+            <Button
+              sx={{ flexGrow: 1 }}
+              onClick={handleUnfollowUser}
+              startIcon={<HowToReg />}
+              variant="outlined"
+              size="small"
+            >
+              Following
+            </Button>
+          ) : (
+            <Button
+              sx={{ flexGrow: 1 }}
+              onClick={handleFollowUser}
+              startIcon={<PersonAdd />}
+              variant="contained"
+              size="small"
+            >
+              Follow
+            </Button>
+          )}
+          <Button
+            sx={{ flexGrow: 1 }}
+            onClick={(e) => handleChatButton(e, id)}
+            startIcon={<ChatBubble />}
+            variant="contained"
+            size="small"
+          >
+            Chat
+          </Button>
+        </CardActions>
       </Card>
       {authUser.uid === id && <NewPostCard />}
       {userPosts.map((post) => {

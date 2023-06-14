@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
-import { Logout, Person } from "@mui/icons-material";
+import { Logout, Person, Menu as MenuIcon } from "@mui/icons-material";
 import {
   Avatar,
   IconButton,
   ListItemIcon,
   ListItemText,
   Menu,
-  MenuItem
+  MenuItem,
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -17,7 +17,6 @@ import { useState } from "react";
 import { IoFootsteps } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import Search from "./Search";
 
 const Icons = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -27,7 +26,7 @@ const Icons = styled(Box)(({ theme }) => ({
   color: "white",
 }));
 
-export default function Navbar() {
+export default function Navbar({ openDrawer }) {
   const [anchorMenu, setAnchorMenu] = useState(false);
   const { authUser, handleSignout } = useAuth();
   const navigate = useNavigate();
@@ -48,24 +47,24 @@ export default function Navbar() {
   return (
     <AppBar position="sticky" id="appbar">
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Box sx={{ display: "flex", gap: 1 }}>
+        <IconButton
+          onClick={openDrawer}
+          sx={{ display: { xs: "block", sm: "none" } }}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
           <Typography variant="h6">
             <IoFootsteps />
           </Typography>
-          <Typography display={{ xs: "none", sm: "block" }} variant="h6">
-            FOOTPRINT
-          </Typography>
+          <Typography variant="h6">FOOTPRINT</Typography>
         </Box>
-        {/* <Search>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <SearchInput placeholder="Search..." />
-        </Search> */}
-        <Search />
+        {/* <Search /> */}
 
         <Icons>
-          {authUser?.displayName}
+          <Typography sx={{ display: { xs: "none", sm: "block" } }}>
+            {authUser?.displayName}
+          </Typography>
           <IconButton onClick={handleOpenMenu}>
             <Avatar src={authUser?.photoURL} />
           </IconButton>

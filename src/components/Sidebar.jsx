@@ -5,7 +5,7 @@ import {
   LightMode,
   Logout,
   People,
-  Person
+  Person,
 } from "@mui/icons-material";
 import {
   Box,
@@ -14,7 +14,7 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
-  ListItemText
+  ListItemText,
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -41,22 +41,6 @@ const Sidebar = () => {
     });
   };
 
-  const [newMessage, setNewMessage] = useState(0);
-  const { getNewMessage, chats } = useChat();
-
-  useEffect(() => {
-    let newMessage = getNewMessage(authUser.uid);
-    setNewMessage(newMessage);
-  }, [chats, authUser]);
-
-  useEffect(() => {
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [sidebarRef, appbarHeight]);
-
-  const navigate = useNavigate();
-
   const menus = [
     { label: "Home", icon: <Home />, onClick: () => navigate("/") },
     {
@@ -74,6 +58,22 @@ const Sidebar = () => {
     },
     { label: "Logout", icon: <Logout />, onClick: () => handleSignout() },
   ];
+
+  const [newMessage, setNewMessage] = useState(0);
+  const { getNewMessage, chats } = useChat();
+
+  useEffect(() => {
+    let newMessage = getNewMessage(authUser.uid);
+    setNewMessage(newMessage);
+  }, [chats, authUser]);
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [sidebarRef, appbarHeight]);
+
+  const navigate = useNavigate();
 
   return (
     <Box

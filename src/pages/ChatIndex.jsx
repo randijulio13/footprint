@@ -31,8 +31,8 @@ export default function ChatIndex() {
   }, [chats]);
 
   return (
-    <Stack spacing={{ sm: 1, md: 2 }} sx={{ p: { xs: 0, sm: 2 } }}>
-      <Typography variant="h4" sx={{ mt: 2 }}>
+    <Stack spacing={{ xs: 1, md: 2 }} sx={{ p: { xs: 0, sm: 2 } }}>
+      <Typography variant="h4" sx={{ mt: 2, m: { xs: 2, md: 0 } }}>
         List Chats
       </Typography>
       {listChat.map((chat) => {
