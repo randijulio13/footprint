@@ -49,7 +49,7 @@ export default function Navbar({ openDrawer }) {
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         <IconButton
           onClick={openDrawer}
-          sx={{ display: { xs: "block", sm: "none" } }}
+          sx={{ display: { xs: "block", sm: "none" }, color: "inherit" }}
         >
           <MenuIcon />
         </IconButton>
