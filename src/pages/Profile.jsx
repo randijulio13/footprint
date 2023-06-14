@@ -14,6 +14,7 @@ import {
   CardContent,
   CardMedia,
   Chip,
+  Collapse,
   Grid,
   Stack,
   Typography,
@@ -28,6 +29,7 @@ import useChat from "../hooks/useChat";
 import useFollow from "../hooks/useFollow";
 import usePost from "../hooks/usePost";
 import useUser from "../hooks/useUser";
+import { TransitionGroup } from "react-transition-group";
 
 const Profile = () => {
   let { id } = useParams();
@@ -221,9 +223,15 @@ const Profile = () => {
         )}
       </Card>
       {authUser.uid === id && <NewPostCard />}
-      {userPosts.map((post) => {
-        return <PostCard key={post.id} {...post} />;
-      })}
+      <TransitionGroup>
+        {userPosts.map((post) => {
+          return (
+            <Collapse key={post.id}>
+              <PostCard {...post} />
+            </Collapse>
+          );
+        })}
+      </TransitionGroup>
     </Stack>
   );
 };

@@ -7,10 +7,11 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  Collapse,
   IconButton,
   Stack,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
@@ -20,6 +21,7 @@ import useAuth from "../hooks/useAuth";
 import useChat from "../hooks/useChat";
 import useElementHeight from "../hooks/useElementHeight";
 import useUser from "../hooks/useUser";
+import { TransitionGroup } from "react-transition-group";
 
 const BubbleChat = styled(Box)(({ theme }) => ({
   wordWrap: "break-word",
@@ -126,68 +128,71 @@ export default function Chat() {
               gap: 2,
             }}
           >
-            {chats.map((chat, index) => {
-              if (chat.senderId === authUser.uid) {
-                return (
-                  <Box
-                    key={chat.id}
-                    sx={{ display: "flex", gap: 2, ml: "auto" }}
-                  >
-                    <Box
-                      sx={{
-                        width: "100%",
-                        display: "flex",
-                        flexDirection: "column",
-                      }}
-                    >
-                      <BubbleChat>{chat.chat}</BubbleChat>
-                      <Typography variant="caption" sx={{ textAlign: "right" }}>
-                        {moment(chat?.createdAt.toDate()).fromNow()}
-                      </Typography>
-                    </Box>
-                    {chats[index - 1]?.senderId !== chat.senderId ? (
-                      <Avatar
-                        src={authUser?.photoURL}
-                        sx={{
-                          visibility: () =>
-                            chats[index - 1]?.senderId !== chat.senderId
-                              ? "visible"
-                              : "hidden",
-                        }}
-                      />
-                    ) : (
-                      <Box sx={{ ml: 5 }}></Box>
-                    )}
-                  </Box>
-                );
-              } else {
-                let user = otherChatMember.find(
-                  (member) => member.id === chat.senderId
-                );
-                return (
-                  <Box
-                    key={chat.id}
-                    sx={{ display: "flex", gap: 2, mr: "auto" }}
-                  >
-                    <Avatar
-                      src={user?.photoURL}
-                      sx={{
-                        visibility: () =>
-                          chats[index - 1]?.senderId !== chat.senderId
-                            ? "visible"
-                            : "hidden",
-                      }}
-                    />
-                    <Box sx={{ width: "100%" }}>
-                      <BubbleChat>{chat.chat}</BubbleChat>
-                      <Typography variant="caption">
-                        {moment(chat?.createdAt.toDate()).fromNow()}
-                      </Typography>
-                    </Box>
-                  </Box>
-                );
-              }
-            })}
+            <TransitionGroup>
+              {chats.map((chat, index) => {
+                if (chat.senderId === authUser.uid) {
+                  return (
+                    <Collapse key={chat.id}>
+                      <Box sx={{ display: "flex", gap: 2, ml: "auto" }}>
+                        <Box
+                          sx={{
+                            width: "100%",
+                            display: "flex",
+                            flexDirection: "column",
+                          }}
+                        >
+                          <BubbleChat>{chat.chat}</BubbleChat>
+                          <Typography
+                            variant="caption"
+                            sx={{ textAlign: "right" }}
+                          >
+                            {moment(chat?.createdAt.toDate()).fromNow()}
+                          </Typography>
+                        </Box>
+                        {chats[index - 1]?.senderId !== chat.senderId ? (
+                          <Avatar
+                            src={authUser?.photoURL}
+                            sx={{
+                              visibility: () =>
+                                chats[index - 1]?.senderId !== chat.senderId
+                                  ? "visible"
+                                  : "hidden",
+                            }}
+                          />
+                        ) : (
+                          <Box sx={{ ml: 5 }}></Box>
+                        )}
+                      </Box>
+                    </Collapse>
+                  );
+                } else {
+                  let user = otherChatMember.find(
+                    (member) => member.id === chat.senderId
+                  );
+                  return (
+                    <Collapse key={chat.id}>
+                      <Box sx={{ display: "flex", gap: 2, mr: "auto" }}>
+                        <Avatar
+                          src={user?.photoURL}
+                          sx={{
+                            visibility: () =>
+                              chats[index - 1]?.senderId !== chat.senderId
+                                ? "visible"
+                                : "hidden",
+                          }}
+                        />
+                        <Box sx={{ width: "100%" }}>
+                          <BubbleChat>{chat.chat}</BubbleChat>
+                          <Typography variant="caption">
+                            {moment(chat?.createdAt.toDate()).fromNow()}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Collapse>
+                  );
+                }
+              })}
+            </TransitionGroup>
             <Box ref={anchorRef}></Box>
           </Box>
         </CardContent>

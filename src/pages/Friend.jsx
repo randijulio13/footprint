@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Collapse,
   Divider,
   Grid,
   List,
@@ -24,6 +25,7 @@ import useChat from "../hooks/useChat";
 import useFollow from "../hooks/useFollow";
 import useUser from "../hooks/useUser";
 import UserAvatar from "../components/UserAvatar";
+import { TransitionGroup } from "react-transition-group";
 
 const ListUser = ({ users }) => {
   const { isFollowing, followUser, unfollowUser } = useFollow();
@@ -71,106 +73,110 @@ const ListUser = ({ users }) => {
           </Typography>
         </ListItem>
       )}
-      {users.map((user) => {
-        return (
-          <Box key={user.id}>
-            <ListItem
-              sx={{
-                justifyContent: "space-between",
-                gap: 2,
-              }}
-            >
-              <Box
-                sx={{
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                }}
-              >
-                <ListItemAvatar>
-                  <UserAvatar {...user} />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={user.name}
-                  secondary={
-                    <Box
-                      sx={{
-                        display: { xs: "flex", md: "none" },
-                        gap: 1,
-                        mt: 1,
-                      }}
-                    >
-                      <Button
-                        onClick={(e) => handleChatButton(e, user.id)}
-                        size="small"
-                        variant="contained"
-                        startIcon={<ChatBubble />}
-                      >
-                        Chat
-                      </Button>
-                      {isFollowing(user.id) ? (
-                        <Button
-                          onClick={() => handleUnfollowUser(user.id)}
-                          startIcon={<HowToReg />}
-                          variant="outlined"
-                          size="small"
-                        >
-                          Following
-                        </Button>
-                      ) : (
-                        <Button
-                          onClick={() => handleFollowUser(user.id)}
-                          startIcon={<PersonAdd />}
-                          variant="contained"
-                          size="small"
-                        >
-                          Follow
-                        </Button>
-                      )}
-                    </Box>
-                  }
-                />
-              </Box>
-              <Box
-                sx={{
-                  display: { xs: "none", md: "flex" },
-                  gap: 2,
-                  justifyContent: "center",
-                }}
-              >
-                <Button
-                  onClick={(e) => handleChatButton(e, user.id)}
-                  size="small"
-                  variant="contained"
-                  startIcon={<ChatBubble />}
+      <TransitionGroup>
+        {users.map((user) => {
+          return (
+            <Collapse key={user.id}>
+              <Box key={user.id}>
+                <ListItem
+                  sx={{
+                    justifyContent: "space-between",
+                    gap: 2,
+                  }}
                 >
-                  Chat
-                </Button>
-                {isFollowing(user.id) ? (
-                  <Button
-                    onClick={() => handleUnfollowUser(user.id)}
-                    startIcon={<HowToReg />}
-                    variant="outlined"
-                    size="small"
+                  <Box
+                    sx={{
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                    }}
                   >
-                    Following
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={() => handleFollowUser(user.id)}
-                    startIcon={<PersonAdd />}
-                    variant="contained"
-                    size="small"
+                    <ListItemAvatar>
+                      <UserAvatar {...user} />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={user.name}
+                      secondary={
+                        <Box
+                          sx={{
+                            display: { xs: "flex", md: "none" },
+                            gap: 1,
+                            mt: 1,
+                          }}
+                        >
+                          <Button
+                            onClick={(e) => handleChatButton(e, user.id)}
+                            size="small"
+                            variant="contained"
+                            startIcon={<ChatBubble />}
+                          >
+                            Chat
+                          </Button>
+                          {isFollowing(user.id) ? (
+                            <Button
+                              onClick={() => handleUnfollowUser(user.id)}
+                              startIcon={<HowToReg />}
+                              variant="outlined"
+                              size="small"
+                            >
+                              Following
+                            </Button>
+                          ) : (
+                            <Button
+                              onClick={() => handleFollowUser(user.id)}
+                              startIcon={<PersonAdd />}
+                              variant="contained"
+                              size="small"
+                            >
+                              Follow
+                            </Button>
+                          )}
+                        </Box>
+                      }
+                    />
+                  </Box>
+                  <Box
+                    sx={{
+                      display: { xs: "none", md: "flex" },
+                      gap: 2,
+                      justifyContent: "center",
+                    }}
                   >
-                    Follow
-                  </Button>
-                )}
+                    <Button
+                      onClick={(e) => handleChatButton(e, user.id)}
+                      size="small"
+                      variant="contained"
+                      startIcon={<ChatBubble />}
+                    >
+                      Chat
+                    </Button>
+                    {isFollowing(user.id) ? (
+                      <Button
+                        onClick={() => handleUnfollowUser(user.id)}
+                        startIcon={<HowToReg />}
+                        variant="outlined"
+                        size="small"
+                      >
+                        Following
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => handleFollowUser(user.id)}
+                        startIcon={<PersonAdd />}
+                        variant="contained"
+                        size="small"
+                      >
+                        Follow
+                      </Button>
+                    )}
+                  </Box>
+                </ListItem>
               </Box>
-            </ListItem>
-          </Box>
-        );
-      })}
+            </Collapse>
+          );
+        })}
+      </TransitionGroup>
     </List>
   );
 };
