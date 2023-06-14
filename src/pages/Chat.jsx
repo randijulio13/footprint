@@ -91,7 +91,7 @@ export default function Chat() {
   return (
     <Stack
       spacing={{ sm: 1, md: 2, lg: 3 }}
-      sx={{ p: { xs: 0, sm: 2 }, height: `calc(100vh - ${appbarHeight}px)` }}
+      sx={{ p: { xs: 0, sm: 2 }, height: `calc(100dvh - ${appbarHeight}px)` }}
     >
       <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
         <CardHeader

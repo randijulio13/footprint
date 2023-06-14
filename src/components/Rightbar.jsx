@@ -31,7 +31,7 @@ const Rightbar = () => {
         display: { xs: "none", md: "block" },
         p: 2,
         width: "100%",
-        height: `calc(100vh - ${appbarHeight}px)`,
+        height: `calc(100dvh - ${appbarHeight}px)`,
       }}
     >
       <Box
