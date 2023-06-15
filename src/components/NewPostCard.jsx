@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import  { useState } from "react";
+import { useState } from "react";
 import useAuth from "../hooks/useAuth";
 import usePost from "../hooks/usePost";
 import { StyledCard } from "./PostCard";
@@ -28,7 +28,7 @@ export default function NewPostCard() {
   };
 
   return (
-    <StyledCard component="form" onSubmit={handleCreateNewPost}>
+    <StyledCard component="form" onSubmit={handleCreateNewPost} sx={{ mb: 1 }}>
       <CardHeader
         title={<Typography>{authUser?.displayName}</Typography>}
         avatar={

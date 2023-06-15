@@ -222,8 +222,13 @@ const Profile = () => {
           </CardActions>
         )}
       </Card>
-      {authUser.uid === id && <NewPostCard />}
+
       <TransitionGroup>
+        {authUser.uid === id && (
+          <Collapse>
+            <NewPostCard />
+          </Collapse>
+        )}
         {userPosts.map((post) => {
           return (
             <Collapse key={post.id}>

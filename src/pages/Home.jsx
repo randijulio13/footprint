@@ -10,8 +10,10 @@ const Home = () => {
 
   return (
     <Stack spacing={{ sm: 1, md: 2, lg: 3 }} sx={{ p: { xs: 0, sm: 2 } }}>
-      <NewPostCard />
       <TransitionGroup>
+        <Collapse>
+          <NewPostCard />
+        </Collapse>
         {posts.map((post) => {
           return (
             <Collapse key={post.id}>

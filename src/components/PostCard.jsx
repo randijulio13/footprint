@@ -120,7 +120,7 @@ export default function PostCard({ id, post, image = null, user, createdAt }) {
   }, [user, likes]);
 
   return (
-    <StyledCard sx={{ marginY: 4 }}>
+    <StyledCard sx={{ marginY: 1 }}>
       <CardHeader
         avatar={<UserAvatar {...user} />}
         action={
