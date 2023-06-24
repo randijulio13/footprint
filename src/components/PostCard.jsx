@@ -124,28 +124,30 @@ export default function PostCard({ id, post, image = null, user, createdAt }) {
       <CardHeader
         avatar={<UserAvatar {...user} />}
         action={
-          <>
-            <IconButton aria-label="settings" onClick={handleOpenMenu}>
-              <MoreVertIcon />
-            </IconButton>
-            <Menu
-              PaperProps={{
-                sx: { width: 200 },
-              }}
-              open={Boolean(anchorMenu)}
-              anchorEl={anchorMenu}
-              onClose={handleCloseMenu}
-              transformOrigin={{ horizontal: "right", vertical: "top" }}
-              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-            >
-              <MenuItem onClick={handleDeletePost}>
-                <ListItemIcon>
-                  <Delete fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Delete</ListItemText>
-              </MenuItem>
-            </Menu>
-          </>
+          user?.uid === authUser?.uid && (
+            <>
+              <IconButton aria-label="settings" onClick={handleOpenMenu}>
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                PaperProps={{
+                  sx: { width: 200 },
+                }}
+                open={Boolean(anchorMenu)}
+                anchorEl={anchorMenu}
+                onClose={handleCloseMenu}
+                transformOrigin={{ horizontal: "right", vertical: "top" }}
+                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+              >
+                <MenuItem onClick={handleDeletePost}>
+                  <ListItemIcon>
+                    <Delete fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Delete</ListItemText>
+                </MenuItem>
+              </Menu>
+            </>
+          )
         }
         title={<Typography>{user?.name}</Typography>}
         subheader={
