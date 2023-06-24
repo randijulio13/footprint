@@ -12,15 +12,7 @@ export default function App() {
   return (
     <ThemeContextProvider>
       <AuthContextProvider>
-        <UserContextProvider>
-          <PostContextProvider>
-            <FollowContextProvider>
-              <ChatContextProvider>
-                <RouterProvider router={router} />
-              </ChatContextProvider>
-            </FollowContextProvider>
-          </PostContextProvider>
-        </UserContextProvider>
+          <RouterProvider router={router} />;
       </AuthContextProvider>
     </ThemeContextProvider>
   );
